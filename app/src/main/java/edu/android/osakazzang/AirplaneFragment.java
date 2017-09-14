@@ -12,6 +12,7 @@ import android.view.ViewGroup;
  * A simple {@link Fragment} subclass.
  */
 public class AirplaneFragment extends Fragment {
+    //asdsadas
 
 
     public AirplaneFragment() {
