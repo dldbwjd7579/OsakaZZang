@@ -75,8 +75,10 @@ public class MainActivity extends AppCompatActivity
                         dialogInterface.cancel();
                 }
             });
+//            AlertDialog dlg = builder.create();
+//            dlg.show();
+            // 원래는 위에 코드인데 아래코드만 써도 똑같은 결과를 보여줌
             builder.show();
-
         }
     }
 
