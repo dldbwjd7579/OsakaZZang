@@ -16,9 +16,9 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener
+,CloseFragment.CloseListener{
 
-    private String name = "name";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private CloseFragment cf = null;
+
 
 
     @Override
@@ -59,26 +61,30 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
 //            super.onBackPressed();
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("종료확인");
-            builder.setMessage("정말 종료하시겠습니까?");
-            builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    finish();
-                }
-            });
-
-            builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                }
-            });
+//            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//            builder.setTitle("종료확인");
+//            builder.setMessage("정말 종료하시겠습니까?");
+//            builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialogInterface, int i) {
+//                    finish();
+//                }
+//            });
+//
+//            builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialogInterface, int i) {
+//                        dialogInterface.cancel();
+//                }
+//            });
 //            AlertDialog dlg = builder.create();
 //            dlg.show();
             // 원래는 위에 코드인데 아래코드만 써도 똑같은 결과를 보여줌
-            builder.show();
+
+//            builder.show();
+            cf = new CloseFragment();
+            cf.show(getSupportFragmentManager(), "close");
+
         }
     }
 
@@ -127,5 +133,16 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void yesInfo() {
+        finish();
+    }
+
+    @Override
+    public void noInfo() {
+        cf.getDialog().cancel();
+
     }
 }
