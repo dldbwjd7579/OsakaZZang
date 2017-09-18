@@ -3,33 +3,33 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/save_travel_route"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:title="나의 여행경로" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/etc1"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="기타" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/etc2"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:title="기타" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/etc3"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="기타" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="계정관리">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/company_introduce"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="회사소개" />
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/helper"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="도움말" />
         </menu>
     </item>
 
