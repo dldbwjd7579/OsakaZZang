@@ -19,13 +19,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SecondActivity" />
         <activity android:name=".NearActivity" />
-
+        <activity android:name=".RouteResultActivity" />
+        <activity android:name=".IntroduceActivity" />
+        <activity android:name=".HelperActivity"></activity>
     </application>
 
 </manifest>

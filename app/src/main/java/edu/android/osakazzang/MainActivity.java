@@ -1,5 +1,6 @@
 package edu.android.osakazzang;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -116,17 +117,19 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.save_travel_route) {
+        if (id == R.id.travel_route) {
             // Handle the camera action
-        } else if (id == R.id.etc1) {
-
-        } else if (id == R.id.etc2) {
-
-        } else if (id == R.id.etc3) {
+            Intent intent = new Intent(this, RouteResultActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.company_introduce) {
+            Intent intent = new Intent(this, IntroduceActivity.class);
+            startActivity(intent);
+
 
         } else if (id == R.id.helper) {
+            Intent intent = new Intent(this, HelperActivity.class);
+            startActivity(intent);
 
         }
 
@@ -145,4 +148,7 @@ public class MainActivity extends AppCompatActivity
         cf.getDialog().cancel();
 
     }
+
+
+
 }
