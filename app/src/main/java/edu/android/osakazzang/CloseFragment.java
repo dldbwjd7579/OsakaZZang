@@ -22,26 +22,7 @@ public class CloseFragment extends DialogFragment {
     private Button yes, no;
 
 
-    public interface CloseListener{
-        void yesInfo();
-        void noInfo();
-    }
 
-    private CloseListener listener;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if(context instanceof CloseListener){
-            listener = (CloseListener)context;
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        this.listener = null;
-    }
 
     public CloseFragment() {
         // Required empty public constructor
@@ -64,8 +45,10 @@ public class CloseFragment extends DialogFragment {
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.yesInfo();
-
+                getActivity().finish();
+//                dismiss();
+//                listener.yesInfo();
+//
 
             }
         });
@@ -73,9 +56,10 @@ public class CloseFragment extends DialogFragment {
         no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(listener != null){
-                    listener.noInfo();
-                }
+                dismiss();
+//                if(listener != null){
+//                    listener.noInfo();
+//                }
             }
         });
 

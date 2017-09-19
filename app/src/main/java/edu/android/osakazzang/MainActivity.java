@@ -1,6 +1,5 @@
 package edu.android.osakazzang;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +17,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
-,CloseFragment.CloseListener{
+{
 
 
     @Override
@@ -138,16 +137,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public void yesInfo() {
-        finish();
-    }
-
-    @Override
-    public void noInfo() {
-        cf.getDialog().cancel();
-
-    }
 
 
 
