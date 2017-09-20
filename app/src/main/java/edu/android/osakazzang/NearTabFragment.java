@@ -74,7 +74,7 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
 
     private GoogleMap googleMap;
     //TODO: 현재 주소와 목적지 주소 가지고 하기  - 현재 주소 한국이라 안될수도 있음
-    //현재 주소 그럼 나리타 공항으로 찍고 Test
+    //TODO: 현재 주소 그럼 나리타 공항으로 찍고 Test
     private static final String URL_DIRECTION_INFO =
             "https://maps.googleapis.com/maps/api/directions/json?"
                     +"origin=34.7211579,135.54424930000005"
