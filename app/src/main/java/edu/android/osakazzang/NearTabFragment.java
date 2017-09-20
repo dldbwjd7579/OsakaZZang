@@ -2,7 +2,11 @@ package edu.android.osakazzang;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -33,7 +37,15 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.gson.Gson;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 
@@ -61,6 +73,86 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
     private boolean isAppStart = false;
 
     private GoogleMap googleMap;
+    //TODO: 현재 주소와 목적지 주소 가지고 하기  - 현재 주소 한국이라 안될수도 있음
+    //현재 주소 그럼 나리타 공항으로 찍고 Test
+    private static final String URL_DIRECTION_INFO =
+            "https://maps.googleapis.com/maps/api/directions/json?"
+                    +"origin=34.7211579,135.54424930000005"
+                    +"&destination=34.6786894,135.50019900000007"
+                    +"&key=AIzaSyAhe9Y8xuECA9I1-tFW_hq15Lpv5eRDxUI"
+                    +"&language=ko&unit=metric";
+
+    //이동경로 계산
+    public class GetDirectionInfoTask extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... params) {
+            URL url = null;
+            HttpURLConnection conn = null;
+
+            InputStream in = null;
+            InputStreamReader reader = null;
+            BufferedReader br = null;
+            StringBuffer data = new StringBuffer();
+
+            try {
+                url = new URL(URL_DIRECTION_INFO);
+                conn = (HttpURLConnection)url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setReadTimeout(1000*5);
+                conn.setConnectTimeout(1000*5);
+
+                int rescode = conn.getResponseCode();
+                if(rescode == HttpURLConnection.HTTP_OK){
+                    in = conn.getInputStream();
+                    reader = new InputStreamReader(in);
+                    br = new BufferedReader(reader);
+
+                    while(true){
+                        String line = br.readLine();
+                        if(line == null){
+                            break;
+                        }
+                        data.append(line);
+                    }
+
+                }else{
+                    Toast.makeText(getContext(), "네트워크 연결 실패", Toast.LENGTH_SHORT).show();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    br.close();
+                    conn.disconnect();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return data.toString();
+        }
+
+        protected void onPostExecute(String result){
+            Gson gson = new Gson();
+            Direction direction = gson.fromJson(result, Direction.class);
+            Log.i("logTag", direction.getDirectionList().size()+"");
+
+            List<Direction.DirectionItem> list = direction.getDirectionList();
+            for(Direction.DirectionItem item : list){
+                LatLng dirStartLatlng = item.getStartLatLng();
+                LatLng dirEndLatlng = item.getEndLatLng();
+
+                /*googleMap.addMarker(new MarkerOptions().position(dirStartLatlng));
+                googleMap.addMarker(new MarkerOptions().position(dirEndLatlng));*/
+                googleMap.addPolyline(new PolylineOptions().add(dirStartLatlng, dirEndLatlng).geodesic(true).color(Color.RED));
+            }
+        }
+
+    }
+    //
+
 
     public NearTabFragment() {
     }
@@ -157,6 +249,15 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
                     markerDestination.setPosition(selectLatLan);
                 }
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectLatLan, 17));
+
+
+                //경로
+                ConnectivityManager manager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo netInfo = manager.getActiveNetworkInfo();
+                if(netInfo != null && netInfo.isAvailable()){
+                    GetDirectionInfoTask task = new GetDirectionInfoTask();
+                    task.execute();
+                }
             }
         });
 
