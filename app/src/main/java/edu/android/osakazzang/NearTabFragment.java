@@ -28,6 +28,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -94,7 +96,9 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
                 lastLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
                 if(markerCurrent == null){
-                    markerCurrent = googleMap.addMarker(new MarkerOptions().position(lastLatLng).title("현재 위치"));
+                    BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
+                    markerCurrent = googleMap.addMarker(new MarkerOptions().position(lastLatLng).title("현재 위치").icon(bitmapDescriptor));
+
                 }else{
                     markerCurrent.setPosition(lastLatLng);
                 }
@@ -148,6 +152,9 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
                 if(markerDestination == null){
                     markerDestination = googleMap.addMarker(new MarkerOptions().position(selectLatLan).title(selectedPName));
                 }else{
+                    markerDestination.setVisible(false);
+                    markerDestination.setTitle(selectedPName);
+                    markerDestination.setVisible(true);
                     markerDestination.setPosition(selectLatLan);
                 }
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectLatLan, 17));
