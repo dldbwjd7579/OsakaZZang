@@ -1,11 +1,15 @@
 package edu.android.osakazzang;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
@@ -19,6 +23,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -27,6 +37,14 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
 
+    //위치 정보 권한 허가를 위한 변수들/////////////////////
+    //private LocationRequest locationRequest;
+    private GoogleApiClient apiClient;
+    private FusedLocationProviderClient locationClient;
+    private Location location;
+    private LocationCallback locationCallback;
+    public static final int REQ_CODE = 1;
+    ////////////////////////////////////////////////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +74,34 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        //btnNearTour : 현재 위치 기반 관광지 추천하는 페이지 연결되는 버튼
+        Button btnNearTour = (Button)findViewById(R.id.btn_near_sights);
+        btnNearTour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int checkLocation = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
+                if(checkLocation != PackageManager.PERMISSION_GRANTED){
+                    String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
+                    ActivityCompat.requestPermissions(MainActivity.this, permissions, REQ_CODE);
+                }
+            }
+        });
+    }
 
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case REQ_CODE:
+                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    //사용자가 권한 허가
+                    Intent intent = new Intent(MainActivity.this, NearActivity.class);
+                    startActivity(intent);
+                }else{
+                    //사용자가 권한 허가하지 않음
+                    Toast.makeText(MainActivity.this, "권한을 허가해 주세요", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
 
     private CloseFragment cf = null;
