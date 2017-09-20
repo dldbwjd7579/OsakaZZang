@@ -98,7 +98,7 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
                 if(markerCurrent == null){
                     BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
                     markerCurrent = googleMap.addMarker(new MarkerOptions().position(lastLatLng).title("현재 위치").icon(bitmapDescriptor));
-
+                    Log.i("logTag", lastLatLng.toString());
                 }else{
                     markerCurrent.setPosition(lastLatLng);
                 }
@@ -146,8 +146,7 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
                 double lon = selectPlace.getpLon();
 
                 LatLng selectLatLan = new LatLng(lat, lon);
-                Toast.makeText(getContext(), selectLatLan.toString(), Toast.LENGTH_SHORT).show();
-
+                Log.i("logTag", selectLatLan.toString());
 
                 if(markerDestination == null){
                     markerDestination = googleMap.addMarker(new MarkerOptions().position(selectLatLan).title(selectedPName));
