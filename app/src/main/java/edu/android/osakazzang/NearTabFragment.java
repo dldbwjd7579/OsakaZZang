@@ -94,7 +94,7 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
                 lastLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
                 if(markerCurrent == null){
-                    markerCurrent = googleMap.addMarker(new MarkerOptions().position(lastLatLng).title(lastLatLng.toString()));
+                    markerCurrent = googleMap.addMarker(new MarkerOptions().position(lastLatLng).title("현재 위치"));
                 }else{
                     markerCurrent.setPosition(lastLatLng);
                 }

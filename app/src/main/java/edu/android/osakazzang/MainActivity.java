@@ -83,6 +83,9 @@ public class MainActivity extends AppCompatActivity
                 if(checkLocation != PackageManager.PERMISSION_GRANTED){
                     String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
                     ActivityCompat.requestPermissions(MainActivity.this, permissions, REQ_CODE);
+                }else{
+                    Intent intent = new Intent(MainActivity.this, NearActivity.class);
+                    startActivity(intent);
                 }
             }
         });
