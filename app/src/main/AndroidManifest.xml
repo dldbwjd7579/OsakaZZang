@@ -23,9 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".SecondActivity" />
         <activity android:name=".RouteResultActivity" />
         <activity android:name=".IntroduceActivity" />
@@ -33,8 +31,8 @@
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".NearActivity"
-            android:label="@string/title_activity_near"
-             />
+            android:label="@string/title_activity_near" />
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
