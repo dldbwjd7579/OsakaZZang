@@ -23,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -34,8 +35,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener
-{
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     //위치 정보 권한 허가를 위한 변수들/////////////////////
     //private LocationRequest locationRequest;
@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity
     private LocationCallback locationCallback;
     public static final int REQ_CODE = 1;
     ////////////////////////////////////////////////////
+
+    // 멤버변수
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +67,17 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Button btnStartTour = (Button)findViewById(R.id.btn_start_tour);
+        // 로그인한 사람의 아이디를 가져오는 intent
+        Intent intent = getIntent();
+        String Id = intent.getStringExtra(LoginActivity.USERIDLOG);
+        // NavigationeView 의 headerView는 일반적인 setText 로는 바뀌지않음
+        // 아래의 코드를 써줘야 바뀜
+        View header = navigationView.getHeaderView(0);
+        textView = (TextView) header.findViewById(R.id.userId_header_main);
+        // 로그인한 아이디를 네비게이션 상단에 표시
+        textView.setText(Id);
+
+        Button btnStartTour = (Button) findViewById(R.id.btn_start_tour);
         btnStartTour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,15 +88,15 @@ public class MainActivity extends AppCompatActivity
         });
 
         //btnNearTour : 현재 위치 기반 관광지 추천하는 페이지 연결되는 버튼
-        Button btnNearTour = (Button)findViewById(R.id.btn_near_sights);
+        Button btnNearTour = (Button) findViewById(R.id.btn_near_sights);
         btnNearTour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int checkLocation = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
-                if(checkLocation != PackageManager.PERMISSION_GRANTED){
+                if (checkLocation != PackageManager.PERMISSION_GRANTED) {
                     String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
                     ActivityCompat.requestPermissions(MainActivity.this, permissions, REQ_CODE);
-                }else{
+                } else {
                     Intent intent = new Intent(MainActivity.this, NearActivity.class);
                     startActivity(intent);
                 }
@@ -93,13 +106,13 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
+        switch (requestCode) {
             case REQ_CODE:
-                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //사용자가 권한 허가
                     Intent intent = new Intent(MainActivity.this, NearActivity.class);
                     startActivity(intent);
-                }else{
+                } else {
                     //사용자가 권한 허가하지 않음
                     Toast.makeText(MainActivity.this, "권한을 허가해 주세요", Toast.LENGTH_SHORT).show();
                 }
@@ -110,13 +123,13 @@ public class MainActivity extends AppCompatActivity
     private CloseFragment cf = null;
 
 
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            // 안드로이드내 기본 다이얼로그를 이용한 종료메시지창
 //            super.onBackPressed();
 //            AlertDialog.Builder builder = new AlertDialog.Builder(this);
 //            builder.setTitle("종료확인");
@@ -139,6 +152,8 @@ public class MainActivity extends AppCompatActivity
             // 원래는 위에 코드인데 아래코드만 써도 똑같은 결과를 보여줌
 
 //            builder.show();
+
+            // 커스텀 다이얼로그를 이용한 종료메시지창
             cf = new CloseFragment();
             cf.show(getSupportFragmentManager(), "close");
 
@@ -193,8 +208,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
 
 
 }
