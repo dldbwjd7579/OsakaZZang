@@ -157,31 +157,6 @@ public class NearActivity extends AppCompatActivity
         }
     }
 
-    /*private void getLastLocation() {
-        Log.i("logTag", "getLastLocation()");
-        Task<Location> task = locationClient.getLastLocation(); //빨간줄 무시해도 됨.
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if(location != null) {
-                    NearActivity.this.location = location;
-                    lastLat = location.getLatitude(); //위도
-                    lastLon = location.getLongitude(); //경도
-                    Log.i("logTag", lastLat + " : " + lastLon);
-
-                    //TODO: 현재 위치 얻어서 프래그먼트로 보내고 싶음
-//                    FragmentManager fm = getSupportFragmentManager();
-//                    NearFragment fragment = (NearFragment) fm.findFragmentById(R.id.container);
-//                    Toast.makeText(MainActivity.this, location.toString(), Toast.LENGTH_SHORT).show();
-//                    fragment.setLastLocation(location.getLatitude(), location.getLongitude());
-
-                }else{
-                    Toast.makeText(NearActivity.this, "저장 된 최근위치 없음" , Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }*/
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode){

@@ -4,18 +4,18 @@ package edu.android.osakazzang;
  * Created by yujung on 2017-09-18.
  */
 
-public class Place {
+public class Place { //관광지 Dummy Data Model Class
     private int pPhoto;
     private String pName;
     private String pPhone;
     private String pAddress;
-    private String pPrice;
+    private int pPrice;
     private double pLat;
     private double pLon;
 
     public Place() {
     }
-    public Place(int pPhoto, String pName, String pPhone, String pAddress, String pPrice, double pLat, double pLon) {
+    public Place(int pPhoto, String pName, String pPhone, String pAddress, int pPrice, double pLat, double pLon) {
         this.pPhoto = pPhoto;
         this.pName = pName;
         this.pPhone = pPhone;
@@ -41,7 +41,7 @@ public class Place {
         return pAddress;
     }
 
-    public String getpPrice() {
+    public int getpPrice() {
         return pPrice;
     }
 

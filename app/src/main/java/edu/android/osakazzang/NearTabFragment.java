@@ -46,6 +46,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -72,15 +73,21 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
     private Marker markerDestination;
     private boolean isAppStart = false;
 
+    private LatLng selectLatLan;
     private GoogleMap googleMap;
-    //TODO: 현재 주소와 목적지 주소 가지고 하기  - 현재 주소 한국이라 안될수도 있음
-    //TODO: 현재 주소 그럼 나리타 공항으로 찍고 Test
-    private static final String URL_DIRECTION_INFO =
+    private PolylineOptions polylineOptions;
+
+    private final String URL_DIRECTION_INFO_ORIGIN =
             "https://maps.googleapis.com/maps/api/directions/json?"
-                    +"origin=34.7211579,135.54424930000005"
-                    +"&destination=34.6786894,135.50019900000007"
-                    +"&key=AIzaSyAhe9Y8xuECA9I1-tFW_hq15Lpv5eRDxUI"
-                    +"&language=ko&unit=metric";
+                    +"origin=";
+    private final String URL_DIRECTION_INFO_DESTINATION = "&destination=";
+    private final String URL_DIRECTION_INFO_END =
+            "&key=AIzaSyAhe9Y8xuECA9I1-tFW_hq15Lpv5eRDxUI"
+            +"&language=ko&unit=metric";
+
+    private Polyline polyline;
+    private ArrayList<Polyline> polyLines = new ArrayList<>();
+
 
     //이동경로 계산
     public class GetDirectionInfoTask extends AsyncTask<Void, Void, String> {
@@ -96,7 +103,14 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
             StringBuffer data = new StringBuffer();
 
             try {
-                url = new URL(URL_DIRECTION_INFO);
+                String FULL_URL = URL_DIRECTION_INFO_ORIGIN
+                        //+ lastLat +","+ lastLon
+                        +"34.4320024,135.23039389999997" //간사이 국제 공항
+                        + URL_DIRECTION_INFO_DESTINATION
+                        + selectLatLan.latitude + "," + selectLatLan.longitude
+                        + URL_DIRECTION_INFO_END;
+
+                url = new URL(FULL_URL);
                 conn = (HttpURLConnection)url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.setReadTimeout(1000*5);
@@ -146,7 +160,10 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
 
                 /*googleMap.addMarker(new MarkerOptions().position(dirStartLatlng));
                 googleMap.addMarker(new MarkerOptions().position(dirEndLatlng));*/
-                googleMap.addPolyline(new PolylineOptions().add(dirStartLatlng, dirEndLatlng).geodesic(true).color(Color.RED));
+
+                polylineOptions = new PolylineOptions();
+                googleMap.addPolyline(polylineOptions.add(dirStartLatlng, dirEndLatlng).geodesic(true).color(Color.RED));
+
             }
         }
 
@@ -224,31 +241,54 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_near_tab, container, false);
         listView = (ListView) view.findViewById(R.id.place_list);
-
-        ArrayAdapter<Place> adapter = new PlaceArrayAdapter(view.getContext(), -1, PlaceLab.getInstance().getPlaceList());
-        listView.setAdapter(adapter);
+        ArrayAdapter<Place> placeAdapter;
+        placeAdapter = new PlaceArrayAdapter(view.getContext(), -1, PlaceLab.getInstance().getPlaceList());
+        listView.setAdapter(placeAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Place selectPlace = PlaceLab.getInstance().getPlaceList().get(i);
-                selectedPName = selectPlace.getpName();
-//                String phone = selectPlace.getpPhone();
-//                String address = selectPlace.getpAddress();
-                double lat = selectPlace.getpLat();
-                double lon = selectPlace.getpLon();
 
-                LatLng selectLatLan = new LatLng(lat, lon);
+                double lat = 0;
+                double lng = 0;
+
+                switch (pagePosition){
+                    case 0:
+                        Place selectPlace = PlaceLab.getInstance().getPlaceList().get(i);
+                        selectedPName = selectPlace.getpName();
+                        lat = selectPlace.getpLat();
+                        lng = selectPlace.getpLon();
+                        break;
+                    case 1:
+                        Accommo selectAccommo = AccommoLab.getInstance().getAccommoList().get(i);
+                        selectedPName = selectAccommo.getaName();
+                        lat = selectAccommo.getaLat();
+                        lng = selectAccommo.getaLng();
+                        break;
+                    case 2:
+                        selectPlace = PlaceLab.getInstance().getPlaceList().get(i);
+                        selectedPName = selectPlace.getpName();
+                        lat = selectPlace.getpLat();
+                        lng = selectPlace.getpLon();
+                        break;
+                }
+
+                selectLatLan = new LatLng(lat, lng);
                 Log.i("logTag", selectLatLan.toString());
+
 
                 if(markerDestination == null){
                     markerDestination = googleMap.addMarker(new MarkerOptions().position(selectLatLan).title(selectedPName));
                 }else{
-                    markerDestination.setVisible(false);
+                    googleMap.clear();
+                    BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
+                    markerCurrent = googleMap.addMarker(new MarkerOptions().position(lastLatLng).title("현재 위치").icon(bitmapDescriptor));
+                    markerDestination = googleMap.addMarker(new MarkerOptions().position(selectLatLan).title(selectedPName));
+                    /*markerDestination.setVisible(false);
                     markerDestination.setTitle(selectedPName);
                     markerDestination.setVisible(true);
-                    markerDestination.setPosition(selectLatLan);
+                    markerDestination.setPosition(selectLatLan);*/
                 }
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectLatLan, 17));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectLatLan, 15));
 
 
                 //경로
@@ -291,26 +331,34 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
             LayoutInflater inflater = LayoutInflater.from(context);
             View view = inflater.inflate(R.layout.near_item_layout, parent, false);
 
+            //
+            List<Accommo> accommoList = AccommoLab.getInstance().getAccommoList();
+
             ImageView image_photo = (ImageView) view.findViewById(R.id.image_item_photo);
             TextView text_name = (TextView) view.findViewById(R.id.text_item_name);
             TextView text_phone = (TextView) view.findViewById(R.id.text_item_phone);
             TextView text_address = (TextView) view.findViewById(R.id.text_item_address);
 
-            String name = placeList.get(position).getpName();
-            String phone = placeList.get(position).getpPhone();
-            String address = placeList.get(position).getpAddress();
+            String name = "";
+            String phone = "";
+            String address = "";
             switch (pagePosition) {
                 case 0:
-                    name += "-page1";
+                    name = placeList.get(position).getpName();
+                    phone = placeList.get(position).getpPhone();
+                    address = placeList.get(position).getpAddress();
+                    image_photo.setImageResource(placeList.get(position).getpPhoto());
                     break;
                 case 1:
-                    name += "-page2";
+                    name = accommoList.get(position).getaName();
+                    phone = accommoList.get(position).getaPhone();
+                    address = accommoList.get(position).getaAddress();
+                    image_photo.setImageResource(accommoList.get(position).getaPhoto());
                     break;
                 case 2:
                     name += "-page3";
                     break;
             }
-            image_photo.setImageResource(placeList.get(position).getpPhoto());
             text_name.setText(name);
             text_phone.setText(phone);
             text_address.setText(address);
