@@ -27,12 +27,15 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         final EditText idText = (EditText)findViewById(R.id.registerId);
+        final EditText passwordText = (EditText)findViewById(R.id.registerPw);
+        final EditText emailText = (EditText) findViewById(R.id.registerEmail);
 
         final Button validateButton = (Button) findViewById(R.id.btn_check_id);
         validateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String userID = idText.getText().toString();
+
                 if(validate){
                     return;
 
@@ -49,12 +52,12 @@ public class RegisterActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(String response) {
-                        Log.i("edu.android", response+"");
+
                         try
                         {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
-                            Log.i("edu.android", jsonResponse.toString());
+
                             if(success){
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
                                 dialog = builder.setMessage("사용 할수 있는 아이디 입니다.")
@@ -90,6 +93,9 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String userID = idText.getText().toString();
+                String userPassword = passwordText.getText().toString();
+                String userEmail = emailText.getText().toString();
+
                 if(!validate){
                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
                     dialog = builder.setMessage("먼저 중복체크를 해주세요")
@@ -99,7 +105,7 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
-                if(userID.equals("")){
+                if(userID.equals("") || userPassword.equals("")){
                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
                     dialog = builder.setMessage("빈칸없이 입력해주세요")
                             .setPositiveButton("확인", null)
@@ -144,7 +150,7 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     }
                 };
-                RegisterRequest registerRequest = new RegisterRequest(userID, responseListener);
+                RegisterRequest registerRequest = new RegisterRequest(userID, userPassword, userEmail, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
                 queue.add(registerRequest);
 
