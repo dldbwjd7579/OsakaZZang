@@ -210,4 +210,9 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    public void MemberInfo(View view) {
+        Intent intent = new Intent(this, MemberInfoActivity.class);
+        startActivity(intent);
+
+    }
 }
