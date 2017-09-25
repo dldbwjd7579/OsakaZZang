@@ -1,4 +1,6 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,8 +8,51 @@
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/textView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="교통편"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.016"
+        tools:layout_editor_absoluteX="133dp"
+        android:layout_marginTop="8dp" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/btn_AirPlane"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:text="비행기"
+        android:textSize="24sp"
+        android:background="@drawable/japan_airplane"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.155" />
+
+    <Button
+        android:id="@+id/btn_Ship"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:text="배"
+        android:textSize="24sp"
+        android:background="@drawable/japan_ship"
+        app:layout_constraintTop_toBottomOf="@+id/btn_AirPlane"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.362" />
+
+
+
+
+
+
+
+</android.support.constraint.ConstraintLayout>
