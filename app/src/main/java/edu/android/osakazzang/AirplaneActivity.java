@@ -153,6 +153,9 @@ public class AirplaneActivity extends AppCompatActivity
     @Override
     public void dataSelected(int year, int mouth, int dayOfMouth) {
 
+        String  text = year + "." + (mouth+1) + "." + dayOfMouth;
+        textView_DataStart.setText(text);
+
        Calendar cal = new GregorianCalendar(year, mouth, dayOfMouth);
         Date searchDepartTime = cal.getTime();
         airplaneSchedules = lab.getListByDepartDate(searchDepartTime);
@@ -164,9 +167,12 @@ public class AirplaneActivity extends AppCompatActivity
 
 
     @Override
-    public void dateSelectedTwo(int year, int mouth, int dayOfMouth) {
+    public void dateSelectedTwo(int yearTwo, int mouthTwo, int dayOfMouth) {
 
-        Calendar cal = new GregorianCalendar(year, mouth, dayOfMouth);
+        String  text = yearTwo + "." + (mouthTwo+1) + "." + dayOfMouth;
+        textView_DataEnd.setText(text);
+
+        Calendar cal = new GregorianCalendar(yearTwo, mouthTwo, dayOfMouth);
         Date searchDepartTime = cal.getTime();
         airplaneSchedules = lab.getListByDepartDate(searchDepartTime);
 

@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.android.osakazzang.VehicleFragment">
+    tools:context="edu.android.osakazzang.VehicleFragment"
+    android:background="@drawable/osaka"
+    >
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -13,7 +15,9 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="교통편"
+        android:textStyle="italic"
         android:textSize="30sp"
+        android:background="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -29,6 +33,7 @@
         android:layout_height="80dp"
         android:text="비행기"
         android:textSize="24sp"
+        android:textStyle="bold"
         android:background="@drawable/japan_airplane"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -42,6 +47,7 @@
         android:layout_height="80dp"
         android:text="배"
         android:textSize="24sp"
+        android:textStyle="bold"
         android:background="@drawable/japan_ship"
         app:layout_constraintTop_toBottomOf="@+id/btn_AirPlane"
         app:layout_constraintLeft_toLeftOf="parent"
