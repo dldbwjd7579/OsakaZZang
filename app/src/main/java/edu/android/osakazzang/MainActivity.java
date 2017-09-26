@@ -1,18 +1,12 @@
 package edu.android.osakazzang;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -29,10 +23,6 @@ import android.widget.Toast;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,7 +37,8 @@ public class MainActivity extends AppCompatActivity
     ////////////////////////////////////////////////////
 
     // 멤버변수
-    private TextView textView;
+    private TextView headerIdtextView;
+    private String Id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +60,13 @@ public class MainActivity extends AppCompatActivity
 
         // 로그인한 사람의 아이디를 가져오는 intent
         Intent intent = getIntent();
-        String Id = intent.getStringExtra(LoginActivity.USERIDLOG);
+        Id = intent.getStringExtra(LoginActivity.USERIDLOG);
         // NavigationeView 의 headerView는 일반적인 setText 로는 바뀌지않음
         // 아래의 코드를 써줘야 바뀜
         View header = navigationView.getHeaderView(0);
-        textView = (TextView) header.findViewById(R.id.userId_header_main);
+        headerIdtextView = (TextView) header.findViewById(R.id.userId_header_main);
         // 로그인한 아이디를 네비게이션 상단에 표시
-        textView.setText(Id);
+        headerIdtextView.setText(Id);
 
         Button btnStartTour = (Button) findViewById(R.id.btn_start_tour);
         btnStartTour.setOnClickListener(new View.OnClickListener() {
@@ -212,6 +203,7 @@ public class MainActivity extends AppCompatActivity
 
     public void MemberInfo(View view) {
         Intent intent = new Intent(this, MemberInfoActivity.class);
+        intent.putExtra("name", Id);
         startActivity(intent);
 
     }
