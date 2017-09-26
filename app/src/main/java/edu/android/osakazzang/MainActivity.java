@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity
     // 멤버변수
     private TextView headerIdtextView;
     private String Id;
+    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +117,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -205,6 +206,8 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, MemberInfoActivity.class);
         intent.putExtra("name", Id);
         startActivity(intent);
+
+
 
     }
 }
