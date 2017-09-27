@@ -103,7 +103,9 @@ public class LoginActivity extends AppCompatActivity {
 
     public void kakaologin(View view) {
 
-        Toast.makeText(this, "아직 미구현이다 임마", Toast.LENGTH_SHORT).show();
+       Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        Toast.makeText(this, "아 어렵다", Toast.LENGTH_SHORT).show();
     }
 
     public void register(View view) {
