@@ -15,6 +15,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -69,6 +70,7 @@ public class DataEndFragment extends DialogFragment implements
 
         Toast.makeText(getContext(), year + " / " +(mouth+1) + " / " + dayOfMonth
                 ,Toast.LENGTH_SHORT).show();
+
 
         if(listenerTwo != null){
             listenerTwo.dateSelectedTwo(year, mouth, dayOfMonth);

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.time.Year;
 import java.util.Calendar;
 
 /**
@@ -51,12 +53,15 @@ public class DataFragment extends DialogFragment implements
         Calendar cal = Calendar.getInstance();
 
         int year = cal.get(Calendar.YEAR);
-        int mouth = cal.get(Calendar.MONTH);
+
+        int month = cal.get(Calendar.MONTH);
+
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+
 
         DatePickerDialog dlg =
                 new DatePickerDialog(getContext(),
-                        this, year, mouth, dayOfMonth);
+                        this, year, month, dayOfMonth);
 
         return dlg;
 
@@ -69,12 +74,12 @@ public class DataFragment extends DialogFragment implements
 
 
     @Override
-    public void onDateSet(DatePicker datePicker, int year, int mouth, int dayOfMonth) {
-        Toast.makeText(getContext(), year + " / " + (mouth+1) + " / " + dayOfMonth
+    public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+        Toast.makeText(getContext(), year + " / " + (month+1) + " / " + dayOfMonth
                 , Toast.LENGTH_SHORT).show();
 
         if(listener != null){
-            listener.dataSelected(year, mouth, dayOfMonth);
+            listener.dataSelected(year, month, dayOfMonth);
         }
 
 
