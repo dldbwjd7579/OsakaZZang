@@ -1,7 +1,7 @@
 package edu.android.osakazzang;
 
 /**
- * Created by STU on 2017-09-26.
+ * Created by YJ on 2017-09-26.
  */
 
 public class AirplaneInfo {
