@@ -13,6 +13,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,13 +24,13 @@ public class TravelFragment extends Fragment {
     private  static final String KEY_ARG1 = "arg_arrival_time"; // 포지션 저장값
 
     private TravelLab lab = TravelLab.getInstance();
+    private List<Travel> itemList;
 
     private int arrivalTime; // 도착 시간(?)
 
     public void setArrivalTime(int position) {
         arrivalTime = position;
     }
-
 
 
     public TravelFragment() {
@@ -39,7 +41,7 @@ public class TravelFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         arrivalTime = args.getInt(KEY_ARG1);
-
+        itemList = lab.find(arrivalTime);
     }
 
     @Override
@@ -82,7 +84,7 @@ public class TravelFragment extends Fragment {
         @Override
         public void onBindViewHolder (TravelItemViewHolder holder, final int position) {
             // open <= 도착 시간 <= close인 여행지 정보만 추출
-            final Travel travel = lab.find(arrivalTime).get(position);
+            final Travel travel = itemList.get(position);
             holder.imageView.setImageResource(travel.getImageId());
             holder.textName.setText(travel.getName());
             holder.textAddress.setText(travel.getAdress());
@@ -94,7 +96,7 @@ public class TravelFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     // -> 체크박스가 선택됐는지 안됐는지를 저장
-                    lab.getList().get(position).setSelected(((CheckBox) view).isChecked());
+                    itemList.get(position).setSelected(((CheckBox) view).isChecked());
                 }
             });
 

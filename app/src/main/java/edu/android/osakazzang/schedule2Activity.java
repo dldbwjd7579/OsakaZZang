@@ -42,6 +42,30 @@ public class schedule2Activity extends AppCompatActivity
 
 //    private TravelLab travelLab = TravelLab.getInstance();
 
+
+    // FIXME: find() 매개변수를 5로 강제로 넣고 있음. 왜냐하면 TravelFragment.newInstance(5);라고 호출했기 때문에
+    // 수정해야 함
+    List<Travel> travelList = TravelLab.getInstance().find(5);
+
+    List<Stay> stayList = StayLab.getInstance().getList();
+
+    List<Restaurant> restaurantList = RestaurantLab.getInstance().find(3);
+
+
+    @Override
+    public void onBackPressed() {
+        for (Travel t : travelList) {
+            t.setSelected(false);
+        }
+
+        for (Restaurant r : restaurantList) {
+            r.setSelected3(false);
+        }
+
+        super.onBackPressed();
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -52,6 +52,12 @@ public class schedule1Activity extends AppCompatActivity {
 
     }
 
+    public void next(View view) {
+
+        Intent intent  = new Intent(this, TotalActivity.class);
+        startActivity(intent);
+    }
+
     public class DayAdapter extends RecyclerView.Adapter<DayViewHolder>{
 
         @Override
