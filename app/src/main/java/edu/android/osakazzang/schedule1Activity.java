@@ -21,6 +21,7 @@ public class schedule1Activity extends AppCompatActivity {
 
     public static final String KEY_EXTRA_CONTACT_INDEX = "extra_contact_index";
     private List<Day> days;
+    private int dayIndex;
 
 
     @Override
@@ -37,8 +38,6 @@ public class schedule1Activity extends AppCompatActivity {
         Date endDate = end.getTime();
         days = lab.make(startDate, endDate);
 
-
-
         // recyclerview를 찾고 adapter설정
         RecyclerView recycler = (RecyclerView) findViewById(R.id.recycler_view);
 
@@ -46,6 +45,9 @@ public class schedule1Activity extends AppCompatActivity {
 
         DayAdapter adapter = new DayAdapter();
         recycler.setAdapter(adapter);
+
+        Intent intent = getIntent();
+        dayIndex = intent.getIntExtra(schedule1Activity.KEY_EXTRA_CONTACT_INDEX, 0);
 
 
     }

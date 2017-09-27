@@ -1,6 +1,7 @@
 package edu.android.osakazzang;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -32,6 +33,7 @@ public class AirplaneActivity extends AppCompatActivity
         DataEndFragment.DataSelectListenerTwo{
 
     public static final String TAG = "Main_index";
+    private static final String KEY_DAY_INDEX = "key_day_index";
     private int viewHolderCount; // 카운터 수
     private TextView textView_DataStart;
     private TextView textView_DataEnd;
@@ -41,7 +43,8 @@ public class AirplaneActivity extends AppCompatActivity
 
     private static final String URL_AIRPLANE_INFO_1 =
             "http://openapi.airport.co.kr/service/rest/FlightScheduleList/getIflightScheduleList?"
-                    + "ServiceKey="
+                    + "ServiceK" +
+                    "ey="
                     + "8hIeG6ga31T9L%2FYytDvxB49ASzbFxRAF47Jze%2B08Op8cRJBQPHTY8heGRhea%2B6A%2BfKt7NGg2440qf3qCv23d9w%3D%3D"
                     + "&schDate=";
 
@@ -133,14 +136,9 @@ public class AirplaneActivity extends AppCompatActivity
 
     }
 
-    public void next(View view) {
 
 
 
-
-
-
-    }
 
 
     public class GetAirplaneInfoTask extends AsyncTask<String, Void, String> {
@@ -341,6 +339,8 @@ public class AirplaneActivity extends AppCompatActivity
 
 
 
+
+
         Calendar cal = new GregorianCalendar(yearTwo, mouthTwo, dayOfMouth);
         Date searchDepartTime = cal.getTime();
         airplaneSchedules = lab.getListByDepartDate(searchDepartTime);
@@ -348,6 +348,14 @@ public class AirplaneActivity extends AppCompatActivity
         // notifyDataSetChanged : adapteer에게 요청를 하면 RcyclerView 다시 그려주는 메소드
         adatper.notifyDataSetChanged();
 
+
+    }
+
+
+    public void next(View view) {
+
+        Intent intent  = new Intent(this, schedule1Activity.class);
+        startActivity(intent);
 
     }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.android.osaka1.TravelFragment">
+    tools:context="edu.android.osakazzang.TravelFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
