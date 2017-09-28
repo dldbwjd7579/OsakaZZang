@@ -86,7 +86,7 @@ public class TotalFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_total, null);
 
         text_Traffic = view.findViewById(R.id.text_Traffic); // 선택한 교통편
-        text_TrafficDetail = view.findViewById(R.id.text_TrafficDetail); // 교통편detail
+        text_TrafficDetail = view.findViewById(R.id.text_TrafficDetail); // 교통편 detail
         text_Day = view.findViewById(R.id.text_Day); //날짜
         text_Content1 = view.findViewById(R.id.text_Content1); // 체크한 관광지
         text_Content2 = view.findViewById(R.id.text_Content2); // 체크한 숙박
