@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,7 +50,8 @@ public class schedule2Activity extends AppCompatActivity
 
     List<Stay> stayList = StayLab.getInstance().getList();
 
-    List<Restaurant> restaurantList = RestaurantLab.getInstance().find(3);
+    // FIXME: 왜 find() 매개변수로 4를 주고 있을까?
+    List<Restaurant> restaurantList = RestaurantLab.getInstance().find(4);
 
 
     @Override
@@ -91,6 +93,7 @@ public class schedule2Activity extends AppCompatActivity
                         .setAction("Action", null).show();
                 findViewById(R.id.fab);
 
+                Log.i("mytag", "***** schedule2Activity:: dateIndex=" + dateIndex);
                 TotalFragment dlg = TotalFragment.newInstance(dateIndex);
                 dlg.show(getSupportFragmentManager(), "Total_dlg");
 
@@ -142,9 +145,12 @@ public class schedule2Activity extends AppCompatActivity
                     return StayFragment.newInstance(position);
                 case 2:
                     // TODO: 맛집 프래그먼트 리턴
-                    return RestaurantFragment.newInstance(3);
+                    // FIXME: 왜 newInstance() 매개변수가 4일까?
+                    return RestaurantFragment.newInstance(4);
                 default:
-                    return TravelFragment.newInstance(100);
+                    return TravelFragment.newInstance(
+
+                            00);
             }
 
         }

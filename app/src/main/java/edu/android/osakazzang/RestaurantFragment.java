@@ -93,7 +93,7 @@ public class RestaurantFragment extends Fragment {
             holder.RestuarantCheck.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    lab.getList().get(position).setSelected3(((CheckBox) view).isChecked());
+                    lab.find(arrivalTime).get(position).setSelected3(((CheckBox) view).isChecked());
                 }
             });
         }
@@ -101,6 +101,7 @@ public class RestaurantFragment extends Fragment {
         @Override
         public int getItemCount() {
 
+            Log.i("mytag", "RestaurantFragment:: arrivalTime=" + arrivalTime);
             return lab.find(arrivalTime).size();
 
         }

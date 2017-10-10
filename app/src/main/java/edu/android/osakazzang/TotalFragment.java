@@ -140,7 +140,10 @@ public class TotalFragment extends DialogFragment {
         }
         text_Content2.setText(stayBuffer);
 
-        List<Restaurant> list3 = restaurantLab.getList();
+        // FIXME: 도착 시간 정보를 find() 매개변수로 줘야 함!!!
+        List<Restaurant> list3 = restaurantLab.getInstance().find(4);
+        Log.i("mytag", "***** TotalFragment:: datePosition=" + datePosition);
+        Log.i("mytag", "***** TotalFragment:: list3 size=" + list3.size());
         StringBuffer restaurantBuffer = new StringBuffer();
         for (int i = 0; i < list3.size(); i++){
             Restaurant restaurant = list3.get(i);
