@@ -47,8 +47,8 @@ public class MemberInfoActivity extends AppCompatActivity {
 
                     userid = jsonResponse.getString("userID");
                     useremail = jsonResponse.getString("userEmail");
-                    textViewemail.setText(userid);
-                    textViewid.setText(useremail);
+                    textViewemail.setText(useremail);
+                    textViewid.setText(userid);
 
                 } catch (Exception e) {
                     e.printStackTrace();
