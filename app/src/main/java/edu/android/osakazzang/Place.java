@@ -1,7 +1,7 @@
 package edu.android.osakazzang;
 
 /**
- * Created by yujung on 2017-09-18.
+ * Created by YuJung on 2017-09-18.
  */
 
 public class Place { //관광지 Dummy Data Model Class

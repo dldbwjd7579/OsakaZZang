@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by itwill on 2017-09-18.
+ * Created by YuJung on 2017-09-18.
  */
 
 public class PlaceLab { //관광지 Dummy Data Lab Class

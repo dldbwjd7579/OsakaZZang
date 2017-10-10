@@ -1,7 +1,7 @@
 package edu.android.osakazzang;
 
 /**
- * Created by itwill on 2017-09-21.
+ * Created by YuJung on 2017-09-21.
  */
 
 public class Accommo { //숙박 Dummy Data Model Class

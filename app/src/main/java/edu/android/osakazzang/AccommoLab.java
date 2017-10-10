@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by itwill on 2017-09-21.
+ * Created by YuJung on 2017-09-21.
  */
 
 public class AccommoLab {//숙박 Dummy Data Lab Class
