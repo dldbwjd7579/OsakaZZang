@@ -23,6 +23,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -40,6 +43,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -64,7 +70,7 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
     private static final String KEY = "bundle_key";
     private int pagePosition;
     private LatLng lastLatLng;
-    private String selectedPName;
+    private String selectedName;
     private ListView listView;
     private double lastLat;
     private double lastLon;
@@ -88,6 +94,18 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
     private Polyline polyline;
     private ArrayList<Polyline> polyLines = new ArrayList<>();
 
+    private ArrayAdapter<Place> placeAdapter;
+    private ArrayAdapter<Accommo> accommoAdapter;
+    private ArrayAdapter<Food> foodAdapter;
+    private static List<Accommo> accommoList;
+    private static List<Place> placeList;
+    private static List<Food> foodList;
+
+    //
+    public void notifyAccomoDataCreated() {
+        Log.i("logTag", "   notifyDataSetChanged()");
+        accommoAdapter.notifyDataSetChanged();
+    }
 
     //이동경로 계산
     public class GetDirectionInfoTask extends AsyncTask<Void, Void, String> {
@@ -178,11 +196,17 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
         pagePosition = position;
     }
 
-    public static NearTabFragment newInstance(int position) {
+    public static NearTabFragment newInstance(int position, List<Accommo> accommoData, List<Place> placeData, List<Food> foodData) {
         NearTabFragment fragment = new NearTabFragment();
         Bundle args = new Bundle();
         args.putInt(KEY, position);
         fragment.setArguments(args);
+        accommoList = accommoData;
+        placeList = placeData;
+        foodList = foodData;
+
+        Log.i("logTag", "fragment로 제대로 왔나   :::   " + accommoList.size()
+        +", " + placeList.size() + ", " + foodList.size());
         return fragment;
     }
 
@@ -192,7 +216,6 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
         Bundle args = getArguments();
         pagePosition = args.getInt(KEY);
 
-        /////////////////////////////////////////////////////////
         locationClient = LocationServices.getFusedLocationProviderClient(getContext());
         locationRequest = new LocationRequest();
         locationRequest.setInterval(UPDATE_INTERVAL);
@@ -217,6 +240,8 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
                 }
             }
         };
+
+        //makeData();
     }
 
     @Override
@@ -227,6 +252,8 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
             mapFragment.getMapAsync(this);
             locationClient.requestLocationUpdates(locationRequest, locationCallback, null);
         }
+
+
     }
 
     @Override
@@ -239,11 +266,25 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_near_tab, container, false);
         listView = (ListView) view.findViewById(R.id.place_list);
-        ArrayAdapter<Place> placeAdapter;
-        placeAdapter = new PlaceArrayAdapter(view.getContext(), -1, PlaceLab.getInstance().getPlaceList());
-        listView.setAdapter(placeAdapter);
+
+        switch (pagePosition){
+            case 0:
+                placeAdapter = new PlaceArrayAdapter(view.getContext(), -1, placeList);
+                listView.setAdapter(placeAdapter);
+                break;
+            case 1:
+                accommoAdapter = new AccommoArrayAdapter(view.getContext(), -1, accommoList);
+                listView.setAdapter(accommoAdapter);
+                break;
+            case 2://임시
+                foodAdapter = new FoodArrayAdapter(view.getContext(), -1, foodList);
+                listView.setAdapter(foodAdapter);
+                break;
+        }
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -253,22 +294,22 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
 
                 switch (pagePosition){
                     case 0:
-                        Place selectPlace = PlaceLab.getInstance().getPlaceList().get(i);
-                        selectedPName = selectPlace.getpName();
+                        Place selectPlace = placeList.get(i);
+                        selectedName = selectPlace.getpName();
                         lat = selectPlace.getpLat();
                         lng = selectPlace.getpLon();
                         break;
                     case 1:
-                        Accommo selectAccommo = AccommoLab.getInstance().getAccommoList().get(i);
-                        selectedPName = selectAccommo.getaName();
+                        Accommo selectAccommo = accommoList.get(i);
+                        selectedName = selectAccommo.getaName();
                         lat = selectAccommo.getaLat();
                         lng = selectAccommo.getaLng();
                         break;
                     case 2:
-                        selectPlace = PlaceLab.getInstance().getPlaceList().get(i);
-                        selectedPName = selectPlace.getpName();
-                        lat = selectPlace.getpLat();
-                        lng = selectPlace.getpLon();
+                        Food selectFood = foodList.get(i);
+                        selectedName = selectFood.getfName();
+                        lat = selectFood.getfLat();
+                        lng = selectFood.getfLng();
                         break;
                 }
 
@@ -277,16 +318,13 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
 
 
                 if(markerDestination == null){
-                    markerDestination = googleMap.addMarker(new MarkerOptions().position(selectLatLan).title(selectedPName));
+                    markerDestination = googleMap.addMarker(new MarkerOptions().position(selectLatLan).title(selectedName));
                 }else{
                     googleMap.clear();
                     BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
                     markerCurrent = googleMap.addMarker(new MarkerOptions().position(lastLatLng).title("현재 위치").icon(bitmapDescriptor));
-                    markerDestination = googleMap.addMarker(new MarkerOptions().position(selectLatLan).title(selectedPName));
-                    /*markerDestination.setVisible(false);
-                    markerDestination.setTitle(selectedPName);
-                    markerDestination.setVisible(true);
-                    markerDestination.setPosition(selectLatLan);*/
+                    markerDestination = googleMap.addMarker(new MarkerOptions().position(selectLatLan).title(selectedName));
+
                 }
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectLatLan, 15));
 
@@ -331,8 +369,43 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
             LayoutInflater inflater = LayoutInflater.from(context);
             View view = inflater.inflate(R.layout.near_item_layout, parent, false);
 
-            //
-            List<Accommo> accommoList = AccommoLab.getInstance().getAccommoList();
+            ImageView image_photo = (ImageView) view.findViewById(R.id.image_item_photo);
+            TextView text_name = (TextView) view.findViewById(R.id.text_item_name);
+            TextView text_phone = (TextView) view.findViewById(R.id.text_item_phone);
+            TextView text_address = (TextView) view.findViewById(R.id.text_item_address);
+
+            String name = "";
+            String phone = "";
+            String address = "";
+
+            name = placeList.get(position).getpName();
+            phone = placeList.get(position).getpPhone();
+            address = placeList.get(position).getpAddress();
+            image_photo.setImageResource(placeList.get(position).getpPhoto());
+
+            text_name.setText(name);
+            text_phone.setText(phone);
+            text_address.setText(address);
+
+            return view;
+        }
+    }
+    public class FoodArrayAdapter extends ArrayAdapter<Food>{
+
+        Context context;
+        List<Food> foodList;
+
+        public FoodArrayAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<Food> objects) {
+            super(context, resource, objects);
+            this.context = context;
+            this.foodList = objects;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View view = inflater.inflate(R.layout.near_item_layout, parent, false);
 
             ImageView image_photo = (ImageView) view.findViewById(R.id.image_item_photo);
             TextView text_name = (TextView) view.findViewById(R.id.text_item_name);
@@ -342,22 +415,57 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
             String name = "";
             String phone = "";
             String address = "";
-            switch (pagePosition) {
-                case 0:
-                    name = placeList.get(position).getpName();
-                    phone = placeList.get(position).getpPhone();
-                    address = placeList.get(position).getpAddress();
-                    image_photo.setImageResource(placeList.get(position).getpPhoto());
-                    break;
-                case 1:
-                    name = accommoList.get(position).getaName();
-                    phone = accommoList.get(position).getaPhone();
-                    address = accommoList.get(position).getaAddress();
-                    image_photo.setImageResource(accommoList.get(position).getaPhoto());
-                    break;
-                case 2:
-                    name += "-page3";
-                    break;
+
+            name = foodList.get(position).getfName();
+            phone = foodList.get(position).getfPhone();
+            address = foodList.get(position).getfAddress();
+            image_photo.setImageResource(foodList.get(position).getfPhoto());
+
+            text_name.setText(name);
+            text_phone.setText(phone);
+            text_address.setText(address);
+
+            return view;
+        }
+    }
+    public class AccommoArrayAdapter extends ArrayAdapter<Accommo>{
+
+        Context context;
+        List<Accommo> accommoList;
+
+        public AccommoArrayAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<Accommo> objects) {
+            super(context, resource, objects);
+            this.context = context;
+            this.accommoList = objects;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View view = inflater.inflate(R.layout.near_item_layout, parent, false);
+
+            ImageView image_photo = (ImageView) view.findViewById(R.id.image_item_photo);
+            TextView text_name = (TextView) view.findViewById(R.id.text_item_name);
+            TextView text_phone = (TextView) view.findViewById(R.id.text_item_phone);
+            TextView text_address = (TextView) view.findViewById(R.id.text_item_address);
+
+            String name = "";
+            String phone = "";
+            String address = "";
+
+            accommoList = AccommoLab.getInstance(getContext()).getAccommoList();
+            Log.i("logTag", "           ACCOMMO LIST SIZE = " + accommoList.size());
+            if(accommoList.size() > 0) {
+                name = accommoList.get(position).getaName();
+                phone = accommoList.get(position).getaPhone();
+                address = accommoList.get(position).getaAddress();
+                image_photo.setImageResource(accommoList.get(position).getaPhoto());
+            }else{
+                name = "accommo null";
+                phone = "accommo null";
+                address = "accommo null";
+                image_photo.setImageResource(R.drawable.n1);
             }
             text_name.setText(name);
             text_phone.setText(phone);
@@ -367,10 +475,12 @@ public class NearTabFragment extends Fragment implements OnMapReadyCallback{
         }
     }
 
+
     public void setLastLocation(double latitude, double longitude) {
         lastLat = latitude;
         lastLon = longitude;
         lastLatLng = new LatLng(lastLat, lastLon);
         Log.i("logTag", lastLatLng + "  :  in setLastLocation");
     }
+
 }

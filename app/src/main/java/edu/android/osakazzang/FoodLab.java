@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by YuJung on 2017-09-18.
+ * Created by itwill on 2017-10-11.
  */
 
-public class PlaceLab { //관광지 Dummy Data Lab Class
+public class FoodLab {
 
     private Context context;
     private String sightName;
@@ -33,26 +33,28 @@ public class PlaceLab { //관광지 Dummy Data Lab Class
     private double sightLat;
     private double sightLng;
 
-    private List<Place> placeList;
-    private static PlaceLab instance;
-    private PlaceLab(){
-        placeList = new ArrayList<>();
+    private List<Food> foodList;
+    private static FoodLab instance;
+
+    private FoodLab(){
+        foodList = new ArrayList<>();
     }
-    public static PlaceLab getInstance(Context context){
-        if(instance == null){
-            instance = new PlaceLab();
+
+    public static FoodLab getInstance(Context context) {
+        if (instance == null) {
+            instance = new FoodLab();
             instance.context = context;
             instance.makeData();
         }
-        return  instance;
-    }
-    public List<Place> getPlaceList(){
-        return placeList;
+        return instance;
     }
 
+    public List<Food> getFoodList(){
+        return foodList;
+    }
 
     public void makeData() {
-        Log.i("logTag", "--sight makeData()");
+        Log.i("logTag", "----food makeData()");
         final Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -63,12 +65,11 @@ public class PlaceLab { //관광지 Dummy Data Lab Class
                     }
 
                     response += "]";
-                    Log.i("logTag", "--sight response : " + response);
+                    Log.i("logTag", "----food response : " + response);
 
                     JSONArray jsonResponse = new JSONArray(response);
 
-                    StringBuffer buffer = new StringBuffer();
-                    Log.i("logTag", "--sight jsonResponse.length() : " + jsonResponse.length());
+                    Log.i("logTag", "----food jsonResponse.length() : " + jsonResponse.length());
                     for (int i = 0; i < jsonResponse.length(); i++) {
 
                         JSONObject jsonObject = (JSONObject) jsonResponse.get(i);
@@ -79,11 +80,11 @@ public class PlaceLab { //관광지 Dummy Data Lab Class
                         sightLng = jsonObject.getDouble("SIGHTLNG");
                         sightLat = jsonObject.getDouble("SIGHTLAT");
 
-                        Place a = new Place(R.drawable.carrier, sightName, sightPhone, sightAddress, 100, sightLat, sightLng);
-                        placeList.add(a);
+                        Food f = new Food(R.drawable.cappuccino, sightName, sightPhone, sightAddress, 100, sightLat, sightLng);
+                        foodList.add(f);
                     }
 
-                    Log.i("logTag", "--sight list size : " + placeList.size());
+                    Log.i("logTag", "----food list size : " + foodList.size());
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -91,17 +92,17 @@ public class PlaceLab { //관광지 Dummy Data Lab Class
             }
         };
 
-        SightRequest sightRequest = new SightRequest(responseListener);
+        FoodRequest foodRequest = new FoodRequest(responseListener);
         RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(sightRequest);
+        queue.add(foodRequest);
     }
 }
 
-class SightRequest extends StringRequest {
-    private static final String URL = "http://audrms11061.cafe24.com/selectMainDBbythesight.php";
+class FoodRequest extends StringRequest {
+    private static final String URL = "http://audrms11061.cafe24.com/selectMainDBbyfood.php";
     private Map<String, String> parameters;
 
-    public SightRequest(Response.Listener<String> listener) {
+    public FoodRequest(Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
     }
 

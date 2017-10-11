@@ -7,6 +7,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,6 +24,9 @@ import android.widget.Toast;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
+
+import java.io.Serializable;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -45,6 +49,11 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //NearActivity 에서 필요한 값
+        final List<Accommo> accommoList = AccommoLab.getInstance(this).getAccommoList();
+        final List<Place> placeList = PlaceLab.getInstance(this).getPlaceList();
+        final List<Food> foodList = FoodLab.getInstance(this).getFoodList();
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -90,6 +99,11 @@ public class MainActivity extends AppCompatActivity
                     ActivityCompat.requestPermissions(MainActivity.this, permissions, REQ_CODE);
                 } else {
                     Intent intent = new Intent(MainActivity.this, NearActivity.class);
+                    Log.i("logTag", "제대로 만들어졌나  :::   " + accommoList.size()
+                            +", " + placeList.size() + ", " + foodList.size());
+                    intent.putExtra("accommoList", (Serializable)accommoList);
+                    intent.putExtra("placeList", (Serializable)placeList);
+                    intent.putExtra("foodList", (Serializable)foodList);
                     startActivity(intent);
                 }
             }

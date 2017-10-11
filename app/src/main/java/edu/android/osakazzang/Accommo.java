@@ -1,10 +1,12 @@
 package edu.android.osakazzang;
 
+import java.io.Serializable;
+
 /**
  * Created by YuJung on 2017-09-21.
  */
 
-public class Accommo { //숙박 Dummy Data Model Class
+public class Accommo implements Serializable{ //숙박 Dummy Data Model Class
     private int aPhoto;
     private String aName;
     private String aPhone;

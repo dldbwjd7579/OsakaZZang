@@ -38,6 +38,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.List;
+
 public class NearActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks{
 
@@ -49,6 +51,7 @@ public class NearActivity extends AppCompatActivity
     private FusedLocationProviderClient locationClient;
     private Location location;
     private LocationCallback locationCallback;
+
 
     private double lastLat;
     private double lastLon;
@@ -62,6 +65,9 @@ public class NearActivity extends AppCompatActivity
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private PlacePagerAdapter placePagerAdapter;
+    private List<Accommo> accommoList;
+    private List<Place> placeList;
+    private List<Food> foodList;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -74,6 +80,10 @@ public class NearActivity extends AppCompatActivity
         setContentView(R.layout.activity_near);
 
         Intent intent = getIntent();
+        accommoList = (List<Accommo>) intent.getSerializableExtra("accommoList");
+        placeList = (List<Place>) intent.getSerializableExtra("placeList");
+        foodList = (List<Food>) intent.getSerializableExtra("foodList");
+        Log.i("logTag", "data 제대로 왔나    :::   " + accommoList.size() + ", " + placeList.size() + ", " + foodList.size());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -189,21 +199,21 @@ public class NearActivity extends AppCompatActivity
         @Override
         public Fragment getItem(int position) {
             Log.i("logTag", "getItem(position:" + position + ")");
-            NearTabFragment fragment = NearTabFragment.newInstance(position);
+            NearTabFragment fragment = NearTabFragment.newInstance(position, accommoList, placeList, foodList);
             return fragment;
         }
 
         @Override
         public int getCount() {
-            return PlaceLab.getInstance().getPlaceList().size();
+            return 3;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             String[] pageName = {
-                    "pageName1",
-                    "pageName2",
-                    "pageName3"
+                    "관광지", //Place
+                    "숙소", //Accommo
+                    "맛집" //Food
             };
             return pageName[position];
         }

@@ -1,10 +1,12 @@
 package edu.android.osakazzang;
 
+import java.io.Serializable;
+
 /**
  * Created by YuJung on 2017-09-18.
  */
 
-public class Place { //관광지 Dummy Data Model Class
+public class Place implements Serializable{ //관광지 Dummy Data Model Class
     private int pPhoto;
     private String pName;
     private String pPhone;
