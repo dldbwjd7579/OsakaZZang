@@ -357,6 +357,5 @@ public class AirplaneActivity extends AppCompatActivity
         Intent intent  = new Intent(this, schedule1Activity.class);
         startActivity(intent);
 
-
     }
 }

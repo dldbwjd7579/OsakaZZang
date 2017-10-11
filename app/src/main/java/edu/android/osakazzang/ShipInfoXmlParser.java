@@ -24,6 +24,7 @@ public class ShipInfoXmlParser {
     private static final String XML_TAG_ARVNMKOR = "arvNmKor"; // 도착지 명
     private static final String XML_TAG_ARVDT = "arvDt"; // 도착 일자
     private static final String XML_TAG_ARVTM = "arvTm"; // 도착 시간
+    private static final String XML_TAG_ITEM = "item";
 
     private List<ShipInfo> list = new ArrayList<ShipInfo>();
     private ShipInfo shipInfo;
@@ -42,7 +43,7 @@ public class ShipInfoXmlParser {
                 case XmlPullParser.START_DOCUMENT:
                     break;
                 case XmlPullParser.START_TAG:
-                    if(tagName.equals(XML_TAG_PLYCAT)){
+                    if (tagName.equals(XML_TAG_ITEM)) {
                         shipInfo = new ShipInfo();
                     }
                     break;
@@ -66,6 +67,9 @@ public class ShipInfoXmlParser {
                         shipInfo.setArvDt(text);
                     } else if(tagName.equals(XML_TAG_ARVTM)){
                         shipInfo.setArvTm(text);
+                    } else if(tagName.equals(XML_TAG_ITEM)) {
+                        list.add(shipInfo);
+
                     }
                     break;
             } // end switch

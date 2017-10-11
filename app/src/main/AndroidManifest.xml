@@ -51,7 +51,8 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MemberInfoActivity" />
         <activity android:name=".AirplaneActivity" />
-        <activity android:name=".LastActivity"></activity>
+        <activity android:name=".LastActivity" />
+        <activity android:name=".ShipActivity"></activity>
     </application>
 
 </manifest>

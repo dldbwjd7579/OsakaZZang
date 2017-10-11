@@ -68,8 +68,7 @@ public class AirplaneSchedule {
                 .append("도착지:").append(destCity).append("\n")
                 .append("출발시간:").append(departTime.toString()).append("\n")
                 .append("도착시간:").append(arrivalTime.toString());
-//                .append("출발시간:").append(departTime).append("\n")
-//                .append("도착시간:").append(arrivalTime);
+
 
         return buffer.toString();
     }

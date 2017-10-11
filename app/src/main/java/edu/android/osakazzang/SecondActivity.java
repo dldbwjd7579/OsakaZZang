@@ -52,7 +52,7 @@ public class SecondActivity extends AppCompatActivity implements
 
                 Toast.makeText(this, "배", Toast.LENGTH_SHORT).show();
 
-                Intent intent2 = new Intent(this, AirplaneActivity.class);
+                Intent intent2 = new Intent(this, ShipActivity.class);
 
                 startActivity(intent2);
 
