@@ -40,6 +40,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 여행계획을 짤지 주변관광지를 검색할지 선택하는 메인 Activity
+ */
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

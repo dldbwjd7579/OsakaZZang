@@ -20,6 +20,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+
+/**
+ * Navigation에서 아이디 터치시 해당아이디의 회원정보를 보여주는  Activity
+ */
 public class MemberInfoActivity extends AppCompatActivity {
 
     private static final String TAG = "edu.android";

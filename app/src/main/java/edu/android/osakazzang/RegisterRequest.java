@@ -7,7 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by boram on 2017-09-21.
+ * Created by myunggeun on 2017-09-21.
+ * 회원가입 액티비티에서 입력받은 정보를 서버로 보내는 RegisterRequest
  */
 
 public class RegisterRequest extends StringRequest {

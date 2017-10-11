@@ -10,6 +10,7 @@ import java.util.Map;
 
 /**
  * Created by user on 2017-09-21.
+ * 로그인창에서 입력한 Id 와  Password를 서버로 보내는 Request
  */
 
 public class LoginRequest extends StringRequest{

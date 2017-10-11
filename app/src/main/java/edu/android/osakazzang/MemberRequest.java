@@ -11,6 +11,7 @@ import java.util.Map;
 
 /**
  * Created by user on 2017-09-26.
+ * MemberInfoActivity 에서 쓸 회원정보를 받아오기위해 회원아이디를 서버로 보내는 Request
  */
 
 public class MemberRequest extends StringRequest {

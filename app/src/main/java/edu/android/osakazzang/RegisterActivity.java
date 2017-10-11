@@ -15,6 +15,10 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
+
+/**
+ *  회원가입 Activity
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     private String userID;

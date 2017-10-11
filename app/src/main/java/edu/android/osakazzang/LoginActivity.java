@@ -17,6 +17,11 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * 아이디와 비밀번호를 입력하고 로그인버튼 터치시 서버에서
+ * 해당아이디와 비밀번호를 찾아서 비교후 로그인여부를 결정하는 Activity
+ */
+
 public class LoginActivity extends AppCompatActivity {
 
     private AlertDialog dialog;

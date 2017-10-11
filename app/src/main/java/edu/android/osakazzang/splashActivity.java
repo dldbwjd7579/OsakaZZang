@@ -5,6 +5,12 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+
+/**
+첫 로딩화면을 보여주는 액티비티
+ */
+
+
 public class splashActivity extends AppCompatActivity {
 
     @Override
