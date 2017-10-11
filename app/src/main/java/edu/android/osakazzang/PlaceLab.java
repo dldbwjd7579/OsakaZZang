@@ -58,11 +58,14 @@ public class PlaceLab { //관광지 Dummy Data Lab Class
             public void onResponse(String response) {
                 try {
 
+
+
                     if (response.length() > 0 && response.charAt(response.length() - 1) == ',') {
                         response = response.substring(0, response.length() - 1);
                     }
-
                     response += "]";
+
+
                     Log.i("logTag", "--sight response : " + response);
 
                     JSONArray jsonResponse = new JSONArray(response);

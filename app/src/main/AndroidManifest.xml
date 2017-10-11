@@ -52,7 +52,8 @@
         <activity android:name=".MemberInfoActivity" />
         <activity android:name=".AirplaneActivity" />
         <activity android:name=".LastActivity" />
-        <activity android:name=".ShipActivity"></activity>
+        <activity android:name=".ShipActivity" />
+        <activity android:name=".RouteDetailActivity"></activity>
     </application>
 
 </manifest>

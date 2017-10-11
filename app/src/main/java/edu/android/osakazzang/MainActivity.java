@@ -21,12 +21,24 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.Serializable;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,8 +54,11 @@ public class MainActivity extends AppCompatActivity
 
     // 멤버변수
     private TextView headerIdtextView;
-    private String Id;
+    public String Id;
     private DrawerLayout drawer;
+
+
+    private List<String> dataList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +123,9 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+
+        //RouteResultActivity에서 쓸 값
+        makeData();
     }
 
     @Override
@@ -197,6 +215,12 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.travel_route) {
             // Handle the camera action
             Intent intent = new Intent(this, RouteResultActivity.class);
+            intent.putExtra("id", Id);
+            String[] data = new String[dataList.size()];
+            for(int i = 0; i < dataList.size(); i++){
+                data[i] = dataList.get(i);
+            }
+            intent.putExtra("dataList", data);
             startActivity(intent);
 
         } else if (id == R.id.company_introduce) {
@@ -220,8 +244,74 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, MemberInfoActivity.class);
         intent.putExtra("name", Id);
         startActivity(intent);
+    }
 
 
 
+    public void makeData() {
+        Log.i("logTag", "====route makeData()");
+        final Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+
+                    if (response.length() > 0 && response.charAt(response.length() - 1) == ',') {
+                        response = response.substring(0, response.length() - 1);
+                    }
+
+                    response += "]";
+                    Log.i("logTag", "====route response : " + response);
+
+                    JSONArray jsonResponse = new JSONArray(response);
+
+                    Log.i("logTag", "====route jsonResponse.length() : " + jsonResponse.length());
+                    for (int i = 0; i < jsonResponse.length(); i++) {
+                        JSONObject jsonObject = (JSONObject) jsonResponse.get(i);
+                        Log.i("logTag", "====route jsonObject : " + jsonObject.toString());
+                        String date = (String) jsonObject.get("SAVEDATE");
+                        Log.i("logTag", "====route savedate : " + date);
+                        dataList.add(date);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Log.i("logTag", "====dataList 만들어졌나? : " + dataList);
+            }
+        };
+
+        DataRequest dataRequest = new DataRequest(responseListener);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(dataRequest);
+    }
+
+
+    class DataRequest extends StringRequest {
+        private static final String URL = "http://audrms11061.cafe24.com/testWhere.php";
+        private Map<String, String> parameters;
+
+        public DataRequest(Response.Listener<String> listener) {
+            super(Method.POST, URL, listener, null);
+        }
+
+        @Override
+        protected Map<String, String> getParams() {
+            parameters = new HashMap<>();
+            String id = Id;
+            Log.i("logTag", "====id : " + id);
+            parameters.put("NAME", id);
+
+            return parameters;
+        }
+
+        @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("Content-Type", "application/x-www-form-urlencoded");
+
+            return params;
+        }
     }
 }
+
+
