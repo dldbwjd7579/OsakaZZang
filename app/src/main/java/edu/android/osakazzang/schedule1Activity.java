@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +20,12 @@ import java.util.List;
 
 public class schedule1Activity extends AppCompatActivity {
 
+    public String departYear, departMonth, departDay, arrivalYear, arrivalMonth, arrivalDay;
+
     public static final String KEY_EXTRA_CONTACT_INDEX = "extra_contact_index";
     private List<Day> days;
     private int dayIndex;
+    private int startIndex;
 
 
     @Override
@@ -30,11 +34,22 @@ public class schedule1Activity extends AppCompatActivity {
         setContentView(R.layout.schedule_main2);
 
         DayLab lab = DayLab.getInstance();
-//        days = lab.getDays();
+        days = lab.getDays();
 
-        Calendar start = new GregorianCalendar(2017, 1, 27);
+        // AirplaneActivity가 보내준 인텐트를 얻어옴
+        Intent intent = getIntent();
+        // 년 월 일 // 출발날짜 // 도착날짜 데이터를 받음
+        int KEY_DEPART_YEAR = intent.getIntExtra(AirplaneActivity.KEY_ARRIVAL_YEAR, 0);
+        int KEY_DEPART_MONTH = intent.getIntExtra(AirplaneActivity.KEY_DEPART_MONTH, 1);
+        int KEY_DEPART_DAY = intent.getIntExtra(AirplaneActivity.KEY_DEPART_DAY,2);
+        int KEY_ARRIVAL_YEAR = intent.getIntExtra(AirplaneActivity.KEY_ARRIVAL_YEAR,3);
+        int KEY_ARRIAVAL_MONTH = intent.getIntExtra(AirplaneActivity.KEY_ARRIAVAL_MONTH,4);
+        int KEY_ARRIVAL_DAY = intent.getIntExtra(AirplaneActivity.KEY_ARRIVAL_DAY,5);
+
+        // 출발날짜와 도착날짜를 day 저장하여 onBindViewHolder 에서 세팅해서 뿌려줌
+        Calendar start = new GregorianCalendar(KEY_DEPART_YEAR, KEY_DEPART_MONTH, KEY_DEPART_DAY);
         Date startDate = start.getTime();
-        Calendar end = new GregorianCalendar(2017, 2, 1);
+        Calendar end = new GregorianCalendar(KEY_ARRIVAL_YEAR, KEY_ARRIAVAL_MONTH, KEY_ARRIVAL_DAY);
         Date endDate = end.getTime();
         days = lab.make(startDate, endDate);
 
@@ -46,7 +61,7 @@ public class schedule1Activity extends AppCompatActivity {
         DayAdapter adapter = new DayAdapter();
         recycler.setAdapter(adapter);
 
-        Intent intent = getIntent();
+//        Intent intent = getIntent();
         dayIndex = intent.getIntExtra(schedule1Activity.KEY_EXTRA_CONTACT_INDEX, 0);
 
 
@@ -71,10 +86,14 @@ public class schedule1Activity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(DayViewHolder holder, int position) {
+
+
             Day day = days.get(position);
             holder.imageView.setImageResource(day.getImageId());
             holder.day.setText(day.getDay()+"일");
             holder.month.setText(day.getMonth()+"월");
+
+//            Toast.makeText(schedule1Activity.this, day.getDay(), Toast.LENGTH_SHORT).show();
 
             holder.setIndex(position);
         }

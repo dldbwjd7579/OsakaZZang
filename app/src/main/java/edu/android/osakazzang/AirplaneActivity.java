@@ -33,13 +33,22 @@ public class AirplaneActivity extends AppCompatActivity
         DataEndFragment.DataSelectListenerTwo{
 
     public static final String TAG = "Main_index";
-    private static final String KEY_DAY_INDEX = "key_day_index";
+    public static final String KEY_EXTRA_AIRPLAIN_INDEX = "key_extra_airplain_index";
+    public static final String KEY_DEPART_YEAR = "key_depart_day";
+    public static final String KEY_DEPART_MONTH = "key_depart_month";
+    public static final String KEY_DEPART_DAY = "key_depart_day";
+    public static final String KEY_ARRIVAL_YEAR = "key_arrival_year";
+    public static final String KEY_ARRIAVAL_MONTH = "key_arrival_month";
+    public static final String KEY_ARRIVAL_DAY = "key_arrival_day";
+
     private int viewHolderCount; // 카운터 수
     private TextView textView_DataStart;
     private TextView textView_DataEnd;
     private RecyclerView recycler;
     private AirPlaneAdatper adatper;
     private Button btn_next;
+
+    private int departYear, departMonth, departDay, arrivalYear, arrivalMonth, arrivalDay;
 
     private static final String URL_AIRPLANE_INFO_1 =
             "http://openapi.airport.co.kr/service/rest/FlightScheduleList/getIflightScheduleList?"
@@ -309,8 +318,12 @@ public class AirplaneActivity extends AppCompatActivity
         }
     }
     @Override
-    public void dataSelected(int year, int mouth, int dayOfMouth) {
-        String text = String.format("%02d.%02d.%02d" , year, mouth+1, dayOfMouth);
+    public void dataSelected(int year, int month, int dayOfMonth) {
+        departYear = year;
+        departMonth = month;
+        departDay = dayOfMonth;
+
+        String text = String.format("%02d.%02d.%02d" , year, month+1, dayOfMonth);
 //        String  text = year + "." + (mouth+1) + "." + dayOfMouth;
         textView_DataStart.setText(text);
 
@@ -320,20 +333,25 @@ public class AirplaneActivity extends AppCompatActivity
         startNetWorkTask();
 
 
-       Calendar cal = new GregorianCalendar(year, mouth, dayOfMouth);
+       Calendar cal = new GregorianCalendar(year, month, dayOfMonth);
         Date searchDepartTime = cal.getTime();
         airplaneSchedules = lab.getListByDepartDate(searchDepartTime);
 
         // notifyDataSetChanged : adapter 에게 요청를 하면 RecyclerView 다시 그려주는 메소드
         adatper.notifyDataSetChanged();
 
+
+
     }
 
 
     @Override
-    public void dateSelectedTwo(int yearTwo, int mouthTwo, int dayOfMouth) {
+    public void dateSelectedTwo(int year, int month, int dayOfMonth) {
+        arrivalYear = year;
+        arrivalMonth = month;
+        arrivalDay = dayOfMonth;
 
-        String text = String.format("%02d.%02d.%02d" , yearTwo, mouthTwo+1, dayOfMouth);
+        String text = String.format("%02d.%02d.%02d" , year, month+1, dayOfMonth);
 //        String  text = yearTwo + "." + (mouthTwo+1) + "." + dayOfMouth;
         textView_DataEnd.setText(text);
 
@@ -341,7 +359,7 @@ public class AirplaneActivity extends AppCompatActivity
 
 
 
-        Calendar cal = new GregorianCalendar(yearTwo, mouthTwo, dayOfMouth);
+        Calendar cal = new GregorianCalendar(year, month, dayOfMonth);
         Date searchDepartTime = cal.getTime();
         airplaneSchedules = lab.getListByDepartDate(searchDepartTime);
 
@@ -354,7 +372,13 @@ public class AirplaneActivity extends AppCompatActivity
 
     public void next(View view) {
 
-        Intent intent  = new Intent(this, schedule1Activity.class);
+        Intent intent = new Intent(AirplaneActivity.this, schedule1Activity.class);
+        intent.putExtra(KEY_DEPART_YEAR, departYear);
+        intent.putExtra(KEY_DEPART_MONTH, departMonth);
+        intent.putExtra(KEY_DEPART_DAY, departDay);
+        intent.putExtra(KEY_ARRIVAL_YEAR, arrivalYear);
+        intent.putExtra(KEY_ARRIAVAL_MONTH, arrivalMonth);
+        intent.putExtra(KEY_ARRIVAL_DAY, arrivalDay);
         startActivity(intent);
 
     }

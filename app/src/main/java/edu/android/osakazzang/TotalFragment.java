@@ -169,4 +169,6 @@ public class TotalFragment extends DialogFragment {
         return builder.create();
 
     }
+
+
 }
