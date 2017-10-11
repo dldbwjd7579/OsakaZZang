@@ -16,7 +16,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.time.Year;
+
 import java.util.Calendar;
 
 /**
@@ -35,7 +35,7 @@ public class DataFragment extends DialogFragment implements
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(context instanceof AirplaneActivity){
+        if(context instanceof DataSelectListener){
             listener=(DataSelectListener) context;
         }
     }

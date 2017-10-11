@@ -6,15 +6,17 @@ package edu.android.osakazzang;
 
 public class ShipInfo {
 
+
+    private String dptTm; // 출발 시간
+    private String arvTm; // 도착 시간
+    private String arvnmKor; // 도착지명
+    private String arvDt; // 도착 일자
     private String plyCat; // 선박종류 구분
     private String cat; // 입 출항 구분
     private String departDt; // 운항 날짜
     private String shipId; // 배 아이디
     private String shipNmKor; // 선박명
-    private String dptTm; // 출발 시간
-    private String arvnmKor; // 도착지명
-    private String arvDt; // 도착 일자
-    private String arvTm; // 도착 시간
+
 
     public ShipInfo() {}
 
@@ -104,14 +106,13 @@ public class ShipInfo {
 
     @Override
     public String toString() {
-        return "선박 종류 : " + plyCat + "\n"
-                + "입 출항 구분 : " + cat + "\n"
+        return  "선박 종류 : " + "크루즈" + "\n"
                 + "운항 날짜 : " + departDt + "\n"
                 + "배 아이디 : " + shipId + "\n"
                 + "선박 명 : " + shipNmKor + "\n"
                 + "출발 시간 : " + dptTm + "\n"
-                + "도착지 명 : " + arvnmKor + "\n"
-                + "도착 일자 : " + arvDt + "\n"
-                + "도착 시간 : " + arvTm;
+                + "도착 시간 : " + arvTm + "\n"
+                + "도착 일자 : " + arvDt + "\n";
+
     }
 }

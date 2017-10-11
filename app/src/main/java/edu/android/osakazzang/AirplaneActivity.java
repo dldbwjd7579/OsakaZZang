@@ -33,7 +33,8 @@ public class AirplaneActivity extends AppCompatActivity
         DataEndFragment.DataSelectListenerTwo{
 
     public static final String TAG = "Main_index";
-    private static final String KEY_DAY_INDEX = "key_day_index";
+    private static final String KEY_MESSAGE = "key" ;
+    public String KEY_DAY_INDEX = "key_day_index";
     private int viewHolderCount; // 카운터 수
     private TextView textView_DataStart;
     private TextView textView_DataEnd;
@@ -41,10 +42,10 @@ public class AirplaneActivity extends AppCompatActivity
     private AirPlaneAdatper adatper;
     private Button btn_next;
 
+
     private static final String URL_AIRPLANE_INFO_1 =
             "http://openapi.airport.co.kr/service/rest/FlightScheduleList/getIflightScheduleList?"
-                    + "ServiceK" +
-                    "ey="
+                    + "ServiceKey="
                     + "8hIeG6ga31T9L%2FYytDvxB49ASzbFxRAF47Jze%2B08Op8cRJBQPHTY8heGRhea%2B6A%2BfKt7NGg2440qf3qCv23d9w%3D%3D"
                     + "&schDate=";
 
@@ -53,15 +54,8 @@ public class AirplaneActivity extends AppCompatActivity
     private static final String URL_AIRPLANE_INFO_2 =
                     "&schDeptCityCode=GMP"
                     + "&schArrvCityCode=KIX";
-    private static final String URL_schDate= "schDate=20170920";
-    private static final String URL_schDate2="schDate=20170920";
     private List<AirplaneInfo> airPlaneLists;
 
-
-
-
-    private AirplaneScheduleLab lab = AirplaneScheduleLab.getInstance();
-    private List<AirplaneSchedule> airplaneSchedules;
 
 
 
@@ -96,6 +90,7 @@ public class AirplaneActivity extends AppCompatActivity
         });
 
 
+
         // 1. RecyLerView 를 찾음
         recycler = (RecyclerView) findViewById(R.id.recyclerView);
 
@@ -108,6 +103,8 @@ public class AirplaneActivity extends AppCompatActivity
         recycler.setAdapter(adatper);
 
     }
+
+
 
     @Override
     protected void onStart() {
@@ -130,16 +127,10 @@ public class AirplaneActivity extends AppCompatActivity
             GetAirplaneInfoTask task = new GetAirplaneInfoTask();
             task.execute(URL_AIRPLANE_INFO_1 + AIRPLANE_DATE + URL_AIRPLANE_INFO_2);
 
-
         }
 
 
     }
-
-
-
-
-
 
     public class GetAirplaneInfoTask extends AsyncTask<String, Void, String> {
 
@@ -308,11 +299,20 @@ public class AirplaneActivity extends AppCompatActivity
             });
         }
     }
+
+
+
+
+
+
+
     @Override
     public void dataSelected(int year, int mouth, int dayOfMouth) {
         String text = String.format("%02d.%02d.%02d" , year, mouth+1, dayOfMouth);
 //        String  text = year + "." + (mouth+1) + "." + dayOfMouth;
         textView_DataStart.setText(text);
+
+
 
 
         ////////////////////////
@@ -322,7 +322,7 @@ public class AirplaneActivity extends AppCompatActivity
 
        Calendar cal = new GregorianCalendar(year, mouth, dayOfMouth);
         Date searchDepartTime = cal.getTime();
-        airplaneSchedules = lab.getListByDepartDate(searchDepartTime);
+
 
         // notifyDataSetChanged : adapter 에게 요청를 하면 RecyclerView 다시 그려주는 메소드
         adatper.notifyDataSetChanged();
@@ -338,24 +338,13 @@ public class AirplaneActivity extends AppCompatActivity
         textView_DataEnd.setText(text);
 
 
-
-
-
-        Calendar cal = new GregorianCalendar(yearTwo, mouthTwo, dayOfMouth);
-        Date searchDepartTime = cal.getTime();
-        airplaneSchedules = lab.getListByDepartDate(searchDepartTime);
+//        Calendar cal = new GregorianCalendar(yearTwo, mouthTwo, dayOfMouth);
+//        Date searchDepartTime = cal.getTime();
 
         // notifyDataSetChanged : adapteer에게 요청를 하면 RcyclerView 다시 그려주는 메소드
         adatper.notifyDataSetChanged();
 
-
     }
 
 
-    public void next(View view) {
-
-        Intent intent  = new Intent(this, schedule1Activity.class);
-        startActivity(intent);
-
-    }
 }
