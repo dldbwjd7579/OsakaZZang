@@ -18,6 +18,15 @@ public class Food implements Serializable{
     private double fLng;
 
     public Food(){}
+
+    public Food(String fName, String fPhone, String fAddress, double fLat, double fLng) {
+        this.fName = fName;
+        this.fPhone = fPhone;
+        this.fAddress = fAddress;
+        this.fLat = fLat;
+        this.fLng = fLng;
+    }
+
     public Food(int fPhoto, String fName, String fPhone, String fAddress, int fPrice, double fLat, double fLng) {
         this.fPhoto = fPhoto;
         this.fName = fName;
@@ -54,5 +63,20 @@ public class Food implements Serializable{
 
     public double getfLng() {
         return fLng;
+    }
+
+    @Override
+    public String toString() {
+        String s = "{"
+                + "fName:" + fName + ", "
+                + "fPhone:" + fPhone + ", "
+                + "fAddress:" + fAddress + ", "
+                + "fOpen:" + fOpen + ", "
+                + "fClose:" + fClose + ", "
+                + "fLat:" + fLat + ", "
+                + "fLng:" + fLng
+                + "}";
+
+        return s;
     }
 }

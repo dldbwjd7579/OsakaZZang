@@ -18,11 +18,11 @@ public class Osaka {
     private int SIGHTCLOSE;  // 관광지 닫는시간
     private double SIGHTLAT; // 위도
     private double SIGHTLNG; // 경도
-    private int date;
+    private long date;
 
     public Osaka() {}
 
-    public Osaka(int _id, String SIGHTNAME, String SIGHTADDRESS, String SIGHTPHONE, String HOMEPAGE, int SIGHTOPEN, int SIGHTCLOSE, double SIGHTLAT, double SIGHTLNG, int date) {
+    public Osaka(int _id, String SIGHTNAME, String SIGHTADDRESS, String SIGHTPHONE, String HOMEPAGE, int SIGHTOPEN, int SIGHTCLOSE, double SIGHTLAT, double SIGHTLNG, long date) {
         this._id = _id;
         this.SIGHTNAME = SIGHTNAME;
         this.SIGHTADDRESS = SIGHTADDRESS;
@@ -75,11 +75,11 @@ public class Osaka {
         this.SIGHTPHONE = SIGHTPHONE;
     }
 
-    public int getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
@@ -118,7 +118,7 @@ public class Osaka {
     // 데이터베이스 테이블의 이름, 컬럼의 이름들을 정의
     public static abstract class OsakaScheduleEntry implements BaseColumns{
 
-        public static final String TABLE_NAME = "tbl_Tourist destination";
+        public static final String TABLE_NAME = "tbl_Tourist";
         // BaseColumns가 _ID라는 컬럼 이름 상수를 정의하고 있음
         // -> 따로 상수를 정의할 필요가 없음
 

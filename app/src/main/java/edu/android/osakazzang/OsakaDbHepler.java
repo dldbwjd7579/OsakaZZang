@@ -2,9 +2,13 @@ package edu.android.osakazzang;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static edu.android.osakazzang.Osaka.OsakaScheduleEntry.*;
 
@@ -30,7 +34,7 @@ public class OsakaDbHepler extends SQLiteOpenHelper{
             + COL_Osaka_SIGHTCLOSE + " integer, "
             + COL_Osaka_SIGHTLAT + " text not null, "
             + COL_Osaka_SIGHTLNG + " text not null, "
-                    + COL_Osaka_SIGHTDATE + " integer, "
+            + COL_Osaka_SIGHTDATE + " integer DEFAULT (datetime('now','localtime'))"
             + ")";
 
     private static final String SQL_DROP_TABLE = // Table을 삭제한다는 명령어
@@ -86,18 +90,50 @@ public class OsakaDbHepler extends SQLiteOpenHelper{
         values.put(COL_Osaka_SIGHTCLOSE, o.getSIGHTCLOSE());
         values.put(COL_Osaka_SIGHTLAT, o.getSIGHTLAT());
         values.put(COL_Osaka_SIGHTLNG, o.getSIGHTLNG());
-        values.put(COL_Osaka_SIGHTDATE, o.getDate());
 
-        long result = db.insert(TABLE_NAME,null,values);
+        long result = db.insert(TABLE_NAME, null, values);
+        Log.i(TAG, "insert result = " + result);
 
         db.close();
 
         return result;
 
-
     }
 
-
+//    public List<Food> select(){
+//        List<Food> list = new ArrayList<>();
+//        SQLiteDatabase db = getReadableDatabase();
+//
+//        Cursor cursor = db.query(TABLE_NAME,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null);
+//
+//        cursor.moveToFirst();
+//
+//        for(int i = 0; i < cursor.getCount(); i++){
+//            int id = cursor.getInt(0);
+//            String name = cursor.getString(1);
+//            String address = cursor.getString(2);
+//            String phone = cursor.getString(3);
+//            String home = cursor.getString(4);
+//            int open = cursor.getInt(5);
+//            int close = cursor.getInt(6);
+//            double lat =cursor.getDouble(7);
+//            double lng = cursor.getDouble(8);
+//            long date = cursor.getLong(9);
+//
+//            Food food = new Food(name, phone, address,lat,lng);
+//            list.add(food);
+//
+//            cursor.moveToNext();
+//        }
+//        return list;
+//
+//    }
 
 
 }
