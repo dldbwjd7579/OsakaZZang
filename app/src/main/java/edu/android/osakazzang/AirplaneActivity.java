@@ -34,12 +34,7 @@ public class AirplaneActivity extends AppCompatActivity
 
     public static final String TAG = "Main_index";
     public static final String KEY_EXTRA_AIRPLAIN_INDEX = "key_extra_airplain_index";
-    public static final String KEY_DEPART_YEAR = "key_depart_day";
-    public static final String KEY_DEPART_MONTH = "key_depart_month";
-    public static final String KEY_DEPART_DAY = "key_depart_day";
-    public static final String KEY_ARRIVAL_YEAR = "key_arrival_year";
-    public static final String KEY_ARRIAVAL_MONTH = "key_arrival_month";
-    public static final String KEY_ARRIVAL_DAY = "key_arrival_day";
+
 
     private boolean departDaySelected, arrivalDaySelected;
 
@@ -335,7 +330,6 @@ public class AirplaneActivity extends AppCompatActivity
 //        String  text = year + "." + (mouth+1) + "." + dayOfMouth;
         textView_DataStart.setText(text);
 
-
         ////////////////////////
         //TODO: URL만들어서 Task에 적용
         startNetWorkTask();
@@ -369,9 +363,6 @@ public class AirplaneActivity extends AppCompatActivity
         textView_DataEnd.setText(text);
 
 
-
-
-
         Calendar cal = new GregorianCalendar(year, month, dayOfMonth);
         Date searchDepartTime = cal.getTime();
         airplaneSchedules = lab.getListByDepartDate(searchDepartTime);
@@ -387,12 +378,14 @@ public class AirplaneActivity extends AppCompatActivity
     public void next(View view) {
 
         Intent intent = new Intent(AirplaneActivity.this, schedule1Activity.class);
-        intent.putExtra(KEY_DEPART_YEAR, departYear);
-        intent.putExtra(KEY_DEPART_MONTH, departMonth);
-        intent.putExtra(KEY_DEPART_DAY, departDay);
-        intent.putExtra(KEY_ARRIVAL_YEAR, arrivalYear);
-        intent.putExtra(KEY_ARRIAVAL_MONTH, arrivalMonth);
-        intent.putExtra(KEY_ARRIVAL_DAY, arrivalDay);
+        intent.putExtra(schedule1Activity.KEY_DEPART_YEAR, departYear);
+        intent.putExtra(schedule1Activity.KEY_DEPART_MONTH, departMonth);
+        intent.putExtra(schedule1Activity.KEY_DEPART_DAY, departDay);
+        intent.putExtra(schedule1Activity.KEY_ARRIVAL_YEAR, arrivalYear);
+        intent.putExtra(schedule1Activity.KEY_ARRIAVAL_MONTH, arrivalMonth);
+        intent.putExtra(schedule1Activity.KEY_ARRIVAL_DAY, arrivalDay);
+        intent.putExtra(schedule1Activity.KEY_TRAFFIC_TYPE, "osakaAirplane");
+
         startActivity(intent);
 
     }

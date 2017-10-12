@@ -18,11 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,12 +32,6 @@ public class ShipActivity extends AppCompatActivity implements
         DataFragment.DataSelectListener,DataEndFragment.DataSelectListenerTwo{
 
     private static final String KEY_DAY_INDEX = "key_day_index";
-    public static final String KEY_DEPART_YEAR = "key_depart_day";
-    public static final String KEY_DEPART_MONTH = "key_depart_month";
-    public static final String KEY_DEPART_DAY = "key_depart_day";
-    public static final String KEY_ARRIVAL_YEAR = "key_arrival_year";
-    public static final String KEY_ARRIAVAL_MONTH = "key_arrival_month";
-    public static final String KEY_ARRIVAL_DAY = "key_arrival_day";
     private int viewHolderCount;
     private TextView textView_DataStart;
     private TextView textView_DataEnd;
@@ -367,13 +359,13 @@ public class ShipActivity extends AppCompatActivity implements
 
         Intent intent = new Intent(ShipActivity.this, schedule1Activity.class);
 
-        intent.putExtra(KEY_DEPART_YEAR, shipdepartYear);
-        intent.putExtra(KEY_DEPART_MONTH, shipdepartMonth);
-        intent.putExtra(KEY_DEPART_DAY, shipdepartDay);
-        intent.putExtra(KEY_ARRIVAL_YEAR, shiparrivalYear);
-        intent.putExtra(KEY_ARRIAVAL_MONTH, shiparrivalMonth);
-        intent.putExtra(KEY_ARRIVAL_DAY, shiparrivalDay);
-
+        intent.putExtra(schedule1Activity.KEY_DEPART_YEAR, shipdepartYear);
+        intent.putExtra(schedule1Activity.KEY_DEPART_MONTH, shipdepartMonth);
+        intent.putExtra(schedule1Activity.KEY_DEPART_DAY, shipdepartDay);
+        intent.putExtra(schedule1Activity.KEY_ARRIVAL_YEAR, shiparrivalYear);
+        intent.putExtra(schedule1Activity.KEY_ARRIAVAL_MONTH, shiparrivalMonth);
+        intent.putExtra(schedule1Activity.KEY_ARRIVAL_DAY, shiparrivalDay);
+        intent.putExtra(schedule1Activity.KEY_TRAFFIC_TYPE, "osakaship");
 
         startActivity(intent);
 

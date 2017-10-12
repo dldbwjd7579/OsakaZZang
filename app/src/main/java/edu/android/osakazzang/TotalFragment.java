@@ -4,9 +4,7 @@ package edu.android.osakazzang;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -37,15 +35,15 @@ public class TotalFragment extends DialogFragment {
     private DayLab dayLab = DayLab.getInstance();
     private List<Day> day2;
     private int datePosition;
-    private OsakaDbHepler helper;
 
-    public static TotalFragment newInstance(int datePosition) {
+    public static TotalFragment newInstance(int datePosition, String trafficType) {
         TotalFragment frag = new TotalFragment();
 
         // Bundle 객체 생성 -> Bundle 객체에 datePosition 저장
         // frag의 setArguments() 메소드 호출해서 Bundle 객체를 프래그먼트 아규먼트로 저장
         Bundle args = new Bundle();
         args.putInt("key_date_position", datePosition);
+        args.putString("key_traffic_type", trafficType);
         frag.setArguments(args);
 
         return frag;
@@ -123,15 +121,11 @@ public class TotalFragment extends DialogFragment {
         // list4.get(datePosition) 호출해서 날짜 정보 읽어서 텍스트뷰에 씀
         Bundle args = getArguments();
         datePosition = args.getInt("key_date_position"); // Bundle에서  포지션값을 꺼냄
-        Log.i(TAG, "datePosition : " + datePosition);
+        Log.i(TAG, "datePosition: " + datePosition);
+        String trafficType = args.getString("key_traffic_type");
+        Log.i(TAG, "trafficType: " + trafficType);
 
-        // FIXME: 이 코드가 왜 있지? 이유를 모르겠음!!! >>>>>
-//        Calendar start = new GregorianCalendar(dYear, dMonth, dDay);
-//        Date startDate = start.getTime();
-//        Calendar end = new GregorianCalendar(aYear, aMonth, aDay);
-//        Date endDate = end.getTime();
-//        List<Day> dayList = dayLab.make(startDate, endDate);
-//        Day day = dayList.get(datePosition);
+        text_Traffic.setText(trafficType);
 
 //        Log.i("tag", day.getMonth() + "/" + day.getDay());
 
@@ -145,34 +139,6 @@ public class TotalFragment extends DialogFragment {
         Log.i("mytag", "***** TotalFragment:: selectedDay=" + selectedDay);
         text_Day.setText(selectedDay.toString());
 
-        /*List<Travel> list = travelLab.getList();
-        for (int i = 0; i< list.size(); i++) {
-            Travel travel = list.get(i);
-            if (travel.isSelected()) {
-                Food f = new Food(0, travel.getName(), travel.getPhone(), travel.getAdress(), 10, 0, 0);
-                dataList.add(f);
-            }
-        }
-
-        List<Stay> list2 = stayLab.getList();
-        for (int i = 0; i < list2.size(); i++){
-            Stay stay = list2.get(i);
-            if (stay.isSelected2()){
-                Food f = new Food(0, stay.getName(), stay.getPhone(), stay.getLocation(), 10, 0, 0);
-                dataList.add(f);
-            }
-        }
-
-        // FIXME: 도착 시간 정보를 find() 매개변수로 줘야 함!!!
-        List<Restaurant> list3 = restaurantLab.getInstance().find(4);
-        for (int i = 0; i < list3.size(); i++){
-            Restaurant restaurant = list3.get(i);
-
-            if (restaurant.isSelected3()){
-                Food f = new Food(0, restaurant.getName(), restaurant.getPhone(), restaurant.getAddress(), 10, 0, 0);
-                dataList.add(f);
-            }
-        }*/
 
 
         builder.setView(view);
@@ -195,36 +161,23 @@ public class TotalFragment extends DialogFragment {
 
     // DB에 insert 해야하는 정보
     public void insertOsaka(View view){
+        String traffic = text_Traffic.getText().toString();
+        String trafiicDetail = text_TrafficDetail.getText().toString();
+        String day = text_Day.getText().toString();
 
-        // TODO : 생성자 생성 (traffic, trafficDetail, day, dataList 의 정보들을 전달)
+        StringBuilder sb = new StringBuilder();
+        for(Food f: dataList){
+            sb.append(f.getfName()).append("\n")
+                    .append(f.getfPhone()).append("\n")
+                    .append(f.getfAddress());
+        }
 
-        OsakaDbHepler dbHepler = new OsakaDbHepler(getContext());
 
-        for(int i = 0; i < dataList.size(); i++) {
-            Food food = dataList.get(i);
-            Log.i("mytag", "***** [" + i + "] " + food.toString());
-            Osaka osaka = new Osaka();
-            osaka.setSIGHTNAME(food.getfName());
-            osaka.setSIGHTADDRESS(food.getfAddress());
-            osaka.setSIGHTPHONE(food.getfPhone());
-            osaka.setSIGHTLAT(food.getfLat());
-            osaka.setSIGHTLNG(food.getfLng());
-            osaka.setHOMEPAGE("");
 
-            dbHepler.insert(osaka);
-        } // end for()
+    }
 
-    } // end insert
 
-//    public void selectAll(View view){
-//        List<Food> list = helper.select();
-//        StringBuilder sb = new StringBuilder();
-//        for(Food f : list){
-//            sb.append(f.toString()).append("\n");
-//        }
-//        selectTV.setText(sb);
-//    }
+
+
 
 }
-// love the way you lie, the monster
-// see you again

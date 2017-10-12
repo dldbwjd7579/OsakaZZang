@@ -18,7 +18,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
-import static edu.android.osakazzang.schedule1Activity.*;
+import static edu.android.osakazzang.SecondActivity.*;
 
 public class schedule2Activity extends AppCompatActivity {
 
@@ -55,9 +55,7 @@ public class schedule2Activity extends AppCompatActivity {
     List<Restaurant> restaurantList = RestaurantLab.getInstance().find(4);
 
 
-    ////////////////////
-    private Day selectedDay;
-    ////////////////////
+    private String trafficType;
 
 
     // 관광지,식당 뒤로갈때 false로 처리
@@ -80,10 +78,16 @@ public class schedule2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.schedule_main1);
 
+
+
         ////////////////////
         Intent intent = getIntent();
         dateIndex = intent.getIntExtra(schedule1Activity.KEY_EXTRA_CONTACT_INDEX, 0);
         Log.i("mytag", "***** dateIndex=" + dateIndex);
+
+        trafficType = intent.getStringExtra(schedule1Activity.KEY_TRAFFIC_TYPE);
+
+
         // 스케줄1에서 스케줄2로 날짜정보(DataIndex)를 보낸것을 여기서 받음
         // > TotalFragment에서 dateIndex 정보를 사용해서 DayLab에서 꺼냄
 
@@ -116,7 +120,7 @@ public class schedule2Activity extends AppCompatActivity {
                         .setAction("Action", null).show();
 
                 Log.i("mytag", "***** schedule2Activity:: dateIndex=" + dateIndex);
-                TotalFragment dlg = TotalFragment.newInstance(dateIndex);
+                TotalFragment dlg = TotalFragment.newInstance(dateIndex, trafficType);
 
                 Log.i("logTag2", "dlg = " + dlg);
                 List<Food> dataList = new ArrayList<>();

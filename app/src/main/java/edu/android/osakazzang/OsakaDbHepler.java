@@ -100,40 +100,41 @@ public class OsakaDbHepler extends SQLiteOpenHelper{
 
     }
 
-//    public List<Food> select(){
-//        List<Food> list = new ArrayList<>();
-//        SQLiteDatabase db = getReadableDatabase();
-//
-//        Cursor cursor = db.query(TABLE_NAME,
-//                null,
-//                null,
-//                null,
-//                null,
-//                null,
-//                null);
-//
-//        cursor.moveToFirst();
-//
-//        for(int i = 0; i < cursor.getCount(); i++){
-//            int id = cursor.getInt(0);
-//            String name = cursor.getString(1);
-//            String address = cursor.getString(2);
-//            String phone = cursor.getString(3);
-//            String home = cursor.getString(4);
-//            int open = cursor.getInt(5);
-//            int close = cursor.getInt(6);
-//            double lat =cursor.getDouble(7);
-//            double lng = cursor.getDouble(8);
-//            long date = cursor.getLong(9);
-//
-//            Food food = new Food(name, phone, address,lat,lng);
-//            list.add(food);
-//
-//            cursor.moveToNext();
-//        }
-//        return list;
-//
-//    }
+    public List<Food> select(){
+        List<Food> list = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+
+        cursor.moveToFirst();
+
+        for(int i = 0; i < cursor.getCount(); i++){
+            int id = cursor.getInt(0);
+            String name = cursor.getString(1);
+            String address = cursor.getString(2);
+            String phone = cursor.getString(3);
+            String home = cursor.getString(4);
+            int open = cursor.getInt(5);
+            int close = cursor.getInt(6);
+            double lat =cursor.getDouble(7);
+            double lng = cursor.getDouble(8);
+            long date = cursor.getLong(9);
+
+            Food food = new Food(name, phone, address,lat,lng);
+            list.add(food);
+
+            cursor.moveToNext();
+        }
+
+        return list;
+
+    }
 
 
 }

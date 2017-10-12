@@ -53,17 +53,19 @@ public class VehicleFragment extends Fragment {
         btn_ship =(Button) view.findViewById(R.id.btn_Ship);
 
 
+        // 비행기를 선택했을 경우
         btn_airPlane.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if(listener != null){
                     listener.onVehicleClick(1);
+
                 }
             }
         });
 
-
+        // 배를 선택했을 경우
         btn_ship.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
