@@ -48,6 +48,25 @@ public class schedule1Activity extends AppCompatActivity {
         DayLab lab = DayLab.getInstance();
 //        days = lab.getDayList();
 
+        //shipActivity가 보내준 인텐트를 얻어옴
+        Intent shipintent = getIntent();
+        int KEY_DEPART_YEARS = shipintent.getIntExtra(AirplaneActivity.KEY_ARRIVAL_YEAR, 0);
+        int KEY_DEPART_MONTHS = shipintent.getIntExtra(AirplaneActivity.KEY_DEPART_MONTH, 1);
+        int KEY_DEPART_DAYS = shipintent.getIntExtra(AirplaneActivity.KEY_DEPART_DAY,2);
+        int KEY_ARRIVAL_YEARS = shipintent.getIntExtra(AirplaneActivity.KEY_ARRIVAL_YEAR,3);
+        int KEY_ARRIAVAL_MONTHS = shipintent.getIntExtra(AirplaneActivity.KEY_ARRIAVAL_MONTH,4);
+        int KEY_ARRIVAL_DAYS = shipintent.getIntExtra(AirplaneActivity.KEY_ARRIVAL_DAY,5);
+
+        Calendar shipstart = new GregorianCalendar(KEY_DEPART_YEARS, KEY_DEPART_MONTHS, KEY_DEPART_DAYS);
+        Date shipstartDate = shipstart.getTime();
+
+        Calendar shipend = new GregorianCalendar(KEY_DEPART_YEARS, KEY_DEPART_MONTHS, KEY_DEPART_DAYS);
+        Date shipstartDateend = shipend.getTime();
+        days = lab.make(shipstartDate, shipstartDateend);
+
+
+
+
         // AirplaneActivity가 보내준 인텐트를 얻어옴
         Intent intent = getIntent();
         // 년 월 일 // 출발날짜 // 도착날짜 데이터를 받음

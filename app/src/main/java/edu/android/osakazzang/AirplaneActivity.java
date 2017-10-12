@@ -41,6 +41,8 @@ public class AirplaneActivity extends AppCompatActivity
     public static final String KEY_ARRIAVAL_MONTH = "key_arrival_month";
     public static final String KEY_ARRIVAL_DAY = "key_arrival_day";
 
+    private boolean departDaySelected, arrivalDaySelected;
+
     private int viewHolderCount; // 카운터 수
     private TextView textView_DataStart;
     private TextView textView_DataEnd;
@@ -49,6 +51,7 @@ public class AirplaneActivity extends AppCompatActivity
     private Button btn_next;
 
     private int departYear, departMonth, departDay, arrivalYear, arrivalMonth, arrivalDay;
+
 
     private static final String URL_AIRPLANE_INFO_1 =
             "http://openapi.airport.co.kr/service/rest/FlightScheduleList/getIflightScheduleList?"
@@ -319,6 +322,11 @@ public class AirplaneActivity extends AppCompatActivity
     }
     @Override
     public void dataSelected(int year, int month, int dayOfMonth) {
+        departDaySelected = true;
+        if (departDaySelected && arrivalDaySelected) {
+            btn_next.setEnabled(true);
+        }
+
         departYear = year;
         departMonth = month;
         departDay = dayOfMonth;
@@ -347,6 +355,11 @@ public class AirplaneActivity extends AppCompatActivity
 
     @Override
     public void dateSelectedTwo(int year, int month, int dayOfMonth) {
+        arrivalDaySelected = true;
+        if (departDaySelected && departDaySelected) {
+            btn_next.setEnabled(true);
+        }
+
         arrivalYear = year;
         arrivalMonth = month;
         arrivalDay = dayOfMonth;
@@ -370,6 +383,7 @@ public class AirplaneActivity extends AppCompatActivity
     }
 
 
+
     public void next(View view) {
 
         Intent intent = new Intent(AirplaneActivity.this, schedule1Activity.class);
@@ -380,8 +394,6 @@ public class AirplaneActivity extends AppCompatActivity
         intent.putExtra(KEY_ARRIAVAL_MONTH, arrivalMonth);
         intent.putExtra(KEY_ARRIVAL_DAY, arrivalDay);
         startActivity(intent);
-
-
 
     }
 }

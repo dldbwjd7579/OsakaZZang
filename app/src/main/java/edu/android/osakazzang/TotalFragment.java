@@ -165,6 +165,7 @@ public class TotalFragment extends DialogFragment {
         List<Restaurant> list3 = restaurantLab.getInstance().find(4);
         for (int i = 0; i < list3.size(); i++){
             Restaurant restaurant = list3.get(i);
+
             if (restaurant.isSelected3()){
                 Food f = new Food(0, restaurant.getName(), restaurant.getPhone(), restaurant.getAddress(), 10, 0, 0);
                 dataList.add(f);

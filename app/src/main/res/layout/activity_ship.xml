@@ -38,6 +38,7 @@
         app:layout_constraintHorizontal_bias="0.0"/>
 
     <Button
+        android:enabled="false"
         android:id="@+id/btn_next"
         android:layout_width="100dp"
         android:onClick="next"

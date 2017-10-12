@@ -1,6 +1,7 @@
 package edu.android.osakazzang;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,14 +34,23 @@ public class ShipActivity extends AppCompatActivity implements
         DataFragment.DataSelectListener,DataEndFragment.DataSelectListenerTwo{
 
     private static final String KEY_DAY_INDEX = "key_day_index";
+    public static final String KEY_DEPART_YEAR = "key_depart_day";
+    public static final String KEY_DEPART_MONTH = "key_depart_month";
+    public static final String KEY_DEPART_DAY = "key_depart_day";
+    public static final String KEY_ARRIVAL_YEAR = "key_arrival_year";
+    public static final String KEY_ARRIAVAL_MONTH = "key_arrival_month";
+    public static final String KEY_ARRIVAL_DAY = "key_arrival_day";
     private int viewHolderCount;
     private TextView textView_DataStart;
     private TextView textView_DataEnd;
     private RecyclerView recyclerView;
     private List<ShipInfo> ShipInfos;
     private ShipAdatper adapter;
+    private boolean departDaySelected, arrivalDaySelected;
+    private Button btn_next;
 
     private AirplaneScheduleLab lab = AirplaneScheduleLab.getInstance();
+    private int shipdepartYear, shipdepartMonth, shipdepartDay, shiparrivalYear, shiparrivalMonth, shiparrivalDay;
 
 
     // ship 네트워크주소 URL 확인
@@ -69,6 +80,7 @@ public class ShipActivity extends AppCompatActivity implements
         textView_DataStart = (TextView) findViewById(R.id.textView_DataStart);
         // 도착날짜 텍스트를 찾음
         textView_DataEnd = (TextView) findViewById(R.id.textView_DataEnd);
+        btn_next= (Button) findViewById(R.id.btn_next);
 
 
 
@@ -126,11 +138,6 @@ public class ShipActivity extends AppCompatActivity implements
             task.execute(URL_ShipNAME_INFO_1 + Ship_DATE);
 
         }
-
-
-    }
-
-    public void next(View view) {
 
 
     }
@@ -294,10 +301,23 @@ public class ShipActivity extends AppCompatActivity implements
 
 
 
-    @Override
-    public void dataSelected(int year, int mouth, int dayOfMouth) {
 
-        String text = String.format("%02d.%02d.%02d", year, mouth+1, dayOfMouth);
+
+
+
+
+    @Override
+    public void dataSelected(int year, int month, int dayOfMonth) {
+
+        departDaySelected = true;
+        if (departDaySelected && arrivalDaySelected) {
+            btn_next.setEnabled(true);
+        }
+        shipdepartYear = year;
+        shipdepartMonth = month;
+        shipdepartDay = dayOfMonth;
+
+        String text = String.format("%02d.%02d.%02d", year, month+1, dayOfMonth);
 
 //            String text = year + "." + (mouth+1) + "." +dayOfMouth;
             textView_DataStart.setText(text);
@@ -306,7 +326,7 @@ public class ShipActivity extends AppCompatActivity implements
             startNetWorkTask();
 
             // 날짜 정보를 시간정보로 바꿈
-            Calendar cal = new GregorianCalendar(year, mouth, dayOfMouth);
+            Calendar cal = new GregorianCalendar(year, month, dayOfMonth);
             Date searchDepartTime = cal.getTime();
             // notifyDataSetChanged : adapter 에게 요청하면 Rcyclewview 다시 그려주는 메소드
             adapter.notifyDataSetChanged();
@@ -315,19 +335,47 @@ public class ShipActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void dateSelectedTwo(int yearTwo, int mouthTwo, int dayOfMouthTwo) {
+    public void dateSelectedTwo(int yearTwo, int monthTwo, int dayOfMonthTwo) {
 
-        String text = String.format("%02d.%02d.%02d", yearTwo, mouthTwo+1, dayOfMouthTwo);
+        arrivalDaySelected = true;
+        if (departDaySelected && departDaySelected) {
+            btn_next.setEnabled(true);
+        }
+
+        shiparrivalYear = yearTwo;
+        shiparrivalMonth = monthTwo;
+        shiparrivalDay = dayOfMonthTwo;
+
+        String text = String.format("%02d.%02d.%02d", yearTwo, monthTwo+1, dayOfMonthTwo);
 
         textView_DataEnd.setText(text);
 
         startNetWorkTask();
 
-        Calendar cal = new GregorianCalendar(yearTwo, mouthTwo, dayOfMouthTwo);
+        Calendar cal = new GregorianCalendar(yearTwo, monthTwo, dayOfMonthTwo);
         Date searchDepartTime = cal.getTime();
          // notifyDataSetChanged : adapter 에게 요청하면 Rcyclewview 다시 그려주는 메소드
         adapter.notifyDataSetChanged();
 
 
         }
+
+
+
+    public void next(View view) {
+
+
+        Intent intent = new Intent(ShipActivity.this, schedule1Activity.class);
+
+        intent.putExtra(KEY_DEPART_YEAR, shipdepartYear);
+        intent.putExtra(KEY_DEPART_MONTH, shipdepartMonth);
+        intent.putExtra(KEY_DEPART_DAY, shipdepartDay);
+        intent.putExtra(KEY_ARRIVAL_YEAR, shiparrivalYear);
+        intent.putExtra(KEY_ARRIAVAL_MONTH, shiparrivalMonth);
+        intent.putExtra(KEY_ARRIVAL_DAY, shiparrivalDay);
+
+
+        startActivity(intent);
+
+    }
 }
