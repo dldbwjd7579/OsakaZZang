@@ -6,17 +6,30 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class schedule1Activity extends AppCompatActivity {
@@ -39,6 +52,9 @@ public class schedule1Activity extends AppCompatActivity {
     private String trafficType;
 
 
+    private Button btnSchedule;
+    private String id;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +70,7 @@ public class schedule1Activity extends AppCompatActivity {
         // AirplaneActivity가 보내준 인텐트를 얻어옴
         Intent intent = getIntent();
         dayIndex = intent.getIntExtra(schedule1Activity.KEY_EXTRA_CONTACT_INDEX, 0);
+        id = intent.getStringExtra("id");
 
         // 년 월 일 // 출발날짜 // 도착날짜 데이터를 받음
         int dYear = intent.getIntExtra(KEY_ARRIVAL_YEAR, 0);
@@ -66,7 +83,7 @@ public class schedule1Activity extends AppCompatActivity {
         trafficType = intent.getStringExtra(KEY_TRAFFIC_TYPE);
 
         // 출발날짜와 도착날짜를 day 저장하여 onBindViewHolder 에서 세팅해서 뿌려줌
-        Calendar start = new GregorianCalendar(dYear, dMonth, dday);
+        final Calendar start = new GregorianCalendar(dYear, dMonth, dday);
         Date startDate = start.getTime();
         Calendar end = new GregorianCalendar(aYear, aMonth, aday);
         Date endDate = end.getTime();
@@ -81,8 +98,98 @@ public class schedule1Activity extends AppCompatActivity {
         DayAdapter adapter = new DayAdapter();
         recycler.setAdapter(adapter);
 
+
+        //최종 스케줄 저장 버튼
+        btnSchedule = (Button) findViewById(R.id.btn_scheduleCheck);
+        btnSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OsakaDbHepler helper = new OsakaDbHepler(schedule1Activity.this);
+                List<Osaka> list = helper.select();
+                for(int i = 0; i < list.size(); i++) {
+                    makeData(i);
+                }
+
+                helper.deleteAll();
+
+                Intent intent2 = new Intent(schedule1Activity.this, MainActivity.class);
+                startActivity(intent2);
+            }
+        });
+
     }
 
+    public void makeData(int index) {
+        Log.i("logTag", "@@@@@ sight makeData()");
+
+        final Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    Log.i("logTag", "@@@@@@ response : " + response);
+                    Toast.makeText(schedule1Activity.this, response, Toast.LENGTH_SHORT).show();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        InsertRequest insertRequest = new InsertRequest(responseListener, index);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(insertRequest);
+    }
+
+    class InsertRequest extends StringRequest {
+        private static final String URL = "http://audrms11061.cafe24.com/insert.php";
+        private Map<String, String> parameters;
+        private int index;
+
+        public InsertRequest(Response.Listener<String> listener, int index) {
+            super(Method.POST, URL, listener, null);
+            this.index = index;
+        }
+
+        @Override
+        protected Map<String, String> getParams() {
+
+            OsakaDbHepler helper = new OsakaDbHepler(schedule1Activity.this);
+            List<Osaka> list = helper.select();
+            //안드로이드 db에 저장된 값들을 가져와 서버에 insert
+
+            String userId = id;
+            String sightName = "";
+            String choiceDate = "1";
+            String saveDate = (new Date()).toString();
+
+            //TODO : list가 제대로 오지 않음.. size 검사 안하면 들어가는데 죽고  하면 sightName을 넣을 수 없음
+            if(list.size() > 0) {
+                 userId = id;
+                 sightName = list.get(index).getSIGHTNAME();
+                 choiceDate = "1";
+                 saveDate = (new Date()).toString();
+            } else{
+                Log.i("logTag", "@@@@ list가 제대로 오지 않았음  :   " + list.size());
+            }
+
+            parameters = new HashMap<>();
+            parameters.put("USERID", userId);
+            parameters.put("SIGHTNAME", sightName);
+            parameters.put("CHOICEDATE", choiceDate);
+            parameters.put("SAVEDATE", saveDate);
+
+            helper.close();
+            return parameters;
+        }
+
+        @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("Content-Type", "application/x-www-form-urlencoded");
+
+            return params;
+        }
+    }
 
     // totalActivity에 넘어가는 버튼
     public void next(View view) {

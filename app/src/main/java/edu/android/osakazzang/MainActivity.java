@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 // SecondActivity 를 띄움
                 Intent intent = new Intent(view.getContext(), SecondActivity.class);
+                intent.putExtra("id", Id);
                 startActivity(intent);
             }
         });

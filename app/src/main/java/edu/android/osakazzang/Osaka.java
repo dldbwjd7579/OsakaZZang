@@ -35,6 +35,7 @@ public class Osaka {
         this.date = date;
     }
 
+
     public String getHOMEPAGE() {
         return HOMEPAGE;
     }

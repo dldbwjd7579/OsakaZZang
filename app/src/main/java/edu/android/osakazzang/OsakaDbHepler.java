@@ -135,7 +135,11 @@ public class OsakaDbHepler extends SQLiteOpenHelper{
         cursor.close();
 
         return list;
+    }
 
+    public void deleteAll(){
+        SQLiteDatabase db = getWritableDatabase();
+        int result = db.delete(TABLE_NAME, null, null);
     }
 
 }

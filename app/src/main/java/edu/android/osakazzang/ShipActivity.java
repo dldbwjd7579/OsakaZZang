@@ -55,6 +55,7 @@ public class ShipActivity extends AppCompatActivity implements
                     "&departDt=";
 
     private String Ship_DATE;
+    private String id;
 
 
 //    private static final String URL_ShipNAME_INFO_2 = "&shipNmKor=Incheon"
@@ -67,6 +68,9 @@ public class ShipActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ship);
+
+        Intent intent = getIntent();
+        id = intent.getStringExtra("id");
 
         // 출발날짜 텍스트를 찾음
         textView_DataStart = (TextView) findViewById(R.id.textView_DataStart);
@@ -366,6 +370,7 @@ public class ShipActivity extends AppCompatActivity implements
         intent.putExtra(schedule1Activity.KEY_ARRIAVAL_MONTH, shiparrivalMonth);
         intent.putExtra(schedule1Activity.KEY_ARRIVAL_DAY, shiparrivalDay);
         intent.putExtra(schedule1Activity.KEY_TRAFFIC_TYPE, "osakaship");
+        intent.putExtra("id", id);
 
         startActivity(intent);
 

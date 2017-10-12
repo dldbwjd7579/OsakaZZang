@@ -11,6 +11,8 @@ import android.widget.Toast;
 public class SecondActivity extends AppCompatActivity implements
         VehicleFragment.VehicleFragmentListener{
 
+    private String id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +34,9 @@ public class SecondActivity extends AppCompatActivity implements
 
         }
 
+        Intent intent = getIntent();
+        id = intent.getStringExtra("id");
+
 
     }
 
@@ -43,7 +48,7 @@ public class SecondActivity extends AppCompatActivity implements
                 Toast.makeText(this, "비행기", Toast.LENGTH_SHORT).show();
 
                 Intent intent1 = new Intent(this, AirplaneActivity.class);
-
+                intent1.putExtra("id", id);
                 startActivity(intent1);
 
                 break;
@@ -53,7 +58,7 @@ public class SecondActivity extends AppCompatActivity implements
                 Toast.makeText(this, "배", Toast.LENGTH_SHORT).show();
 
                 Intent intent2 = new Intent(this, ShipActivity.class);
-
+                intent2.putExtra("id", id);
                 startActivity(intent2);
 
                 break;

@@ -70,13 +70,16 @@ public class AirplaneActivity extends AppCompatActivity
     private AirplaneScheduleLab lab = AirplaneScheduleLab.getInstance();
     private List<AirplaneSchedule> airplaneSchedules;
 
-
+    private String id;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_airplane);
+
+        Intent intent = getIntent();
+        id = intent.getStringExtra("id");
 
 
         textView_DataStart = (TextView) findViewById(R.id.textView_DataStart);
@@ -385,6 +388,7 @@ public class AirplaneActivity extends AppCompatActivity
         intent.putExtra(schedule1Activity.KEY_ARRIAVAL_MONTH, arrivalMonth);
         intent.putExtra(schedule1Activity.KEY_ARRIVAL_DAY, arrivalDay);
         intent.putExtra(schedule1Activity.KEY_TRAFFIC_TYPE, "osakaAirplane");
+        intent.putExtra("id", id);
 
         startActivity(intent);
 
