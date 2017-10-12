@@ -4,6 +4,7 @@ package edu.android.osakazzang;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -11,12 +12,17 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import static edu.android.osakazzang.schedule1Activity.*;
 
 
 /**
@@ -24,14 +30,13 @@ import java.util.List;
  */
 public class TotalFragment extends DialogFragment {
 
+    private static final String TAG = "edu.android";
     private TravelLab travelLab = TravelLab.getInstance();
     private StayLab stayLab = StayLab.getInstance();
     private RestaurantLab restaurantLab = RestaurantLab.getInstance();
     private DayLab dayLab = DayLab.getInstance();
     private List<Day> day2;
     private int datePosition;
-
-
 
     public static TotalFragment newInstance(int datePosition) {
         TotalFragment frag = new TotalFragment();
@@ -45,8 +50,10 @@ public class TotalFragment extends DialogFragment {
         return frag;
     }
 
-    public interface TotalListner {
+    private TotalListner totalListner;
 
+    public interface TotalListner {
+        void dateSelect();
     }
 
     private TextView text_Traffic;
@@ -57,8 +64,23 @@ public class TotalFragment extends DialogFragment {
     private TextView text_Content3;
     private TextView text_Total;
 
+    private Button insert;
 
     private TotalListner listner;
+
+    private ListView listView;
+    private List<Food> dataList;
+    private String dayy;
+    private String monthy;
+
+    public void setData(List<Food> list){
+        dataList = list;
+        Log.i("logTag2", "fragment에 전달된 list : " + list);
+    }
+    public void setDayy(String dayy, String monthy){
+        this.dayy = dayy;
+        this.monthy = monthy;
+    }
 
 
     public TotalFragment() {
@@ -85,13 +107,14 @@ public class TotalFragment extends DialogFragment {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View view = inflater.inflate(R.layout.fragment_total, null);
 
+        listView = (ListView) view.findViewById(R.id.listView);
+        ArrayAdapter<Food> adapter = new TotalArrayAdapter(getContext(), -1, dataList);
+        listView.setAdapter(adapter);
+
         text_Traffic = view.findViewById(R.id.text_Traffic); // 선택한 교통편
         text_TrafficDetail = view.findViewById(R.id.text_TrafficDetail); // 교통편 detail
         text_Day = view.findViewById(R.id.text_Day); //날짜
-        text_Content1 = view.findViewById(R.id.text_Content1); // 체크한 관광지
-        text_Content2 = view.findViewById(R.id.text_Content2); // 체크한 숙박
-        text_Content3 = view.findViewById(R.id.text_Content3); // 체크한 맛집
-        text_Total = view.findViewById(R.id.text_Total); //총금액
+        insert =  (Button)view.findViewById(R.id.btn_total);
 
         List<Day> list4 =  dayLab.getDays();
         StringBuffer dayBuffer = new StringBuffer();
@@ -100,75 +123,82 @@ public class TotalFragment extends DialogFragment {
         // list4.get(datePosition) 호출해서 날짜 정보 읽어서 텍스트뷰에 씀
         Bundle args = getArguments();
         datePosition = args.getInt("key_date_position");
+        Log.i(TAG, "datePosition : " + datePosition);
 
-        Calendar start = new GregorianCalendar(2017, 1, 27);
+        Calendar start = new GregorianCalendar(dYear, dMonth, dDay);
         Date startDate = start.getTime();
-        Calendar end = new GregorianCalendar(2017, 2, 1);
+        Calendar end = new GregorianCalendar(aYear, aMonth, aDay);
         Date endDate = end.getTime();
         List<Day> dayList = dayLab.make(startDate, endDate);
         Day day = dayList.get(datePosition);
 
-        Log.i("tag", day.getMonth() + "/" + day.getDay());
+//        Log.i("tag", day.getMonth() + "/" + day.getDay());
 
-        text_Day.setText(day.getMonth() + "월 " + day.getDay() + "일");
+        text_Day.setText(dYear+ "년" + (dMonth+1) + "월 " + dDay + "일");
 
-
-        List<Travel> list = travelLab.getList();
-        StringBuffer travelBuffer = new StringBuffer();
+        /*List<Travel> list = travelLab.getList();
         for (int i = 0; i< list.size(); i++) {
             Travel travel = list.get(i);
             if (travel.isSelected()) {
-                travelBuffer.append(travel.getName()).append("\n")
-                .append(travel.getAdress()).append("\n")
-                        .append("open: " + travel.getOpen() + "시").append("\n")
-                        .append("close: " + travel.getClose() + "시").append("\n\n\n");
+                Food f = new Food(0, travel.getName(), travel.getPhone(), travel.getAdress(), 10, 0, 0);
+                dataList.add(f);
             }
         }
-        text_Content1.setText(travelBuffer);
 
         List<Stay> list2 = stayLab.getList();
-        StringBuffer stayBuffer = new StringBuffer();
         for (int i = 0; i < list2.size(); i++){
             Stay stay = list2.get(i);
             if (stay.isSelected2()){
-                stayBuffer.append(stay.getName()).append("\n")
-                .append(stay.getLocation()).append("\n")
-                .append(stay.getPhone()).append("\n")
-                .append(stay.getHttp()).append("\n")
-                .append(stay.getPrice()).append("\n\n\n");
+                Food f = new Food(0, stay.getName(), stay.getPhone(), stay.getLocation(), 10, 0, 0);
+                dataList.add(f);
             }
         }
-        text_Content2.setText(stayBuffer);
 
         // FIXME: 도착 시간 정보를 find() 매개변수로 줘야 함!!!
         List<Restaurant> list3 = restaurantLab.getInstance().find(4);
-        Log.i("mytag", "***** TotalFragment:: datePosition=" + datePosition);
-        Log.i("mytag", "***** TotalFragment:: list3 size=" + list3.size());
-        StringBuffer restaurantBuffer = new StringBuffer();
         for (int i = 0; i < list3.size(); i++){
             Restaurant restaurant = list3.get(i);
             if (restaurant.isSelected3()){
-                restaurantBuffer.append(restaurant.getName())
-                .append(restaurant.getAddress()).append("\n")
-                        .append("open: " + restaurant.getOpen() + "시").append("\n")
-                        .append("close: " + restaurant.getClose() + "시").append("\n\n\n");
+                Food f = new Food(0, restaurant.getName(), restaurant.getPhone(), restaurant.getAddress(), 10, 0, 0);
+                dataList.add(f);
             }
-        }
-        text_Content3.setText(restaurantBuffer);
-
+        }*/
 
 
         builder.setView(view);
-        builder.setPositiveButton("스케줄 확인", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("닫기", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
 
+        insert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                insertOsaka(view);
             }
         });
 
         return builder.create();
 
     }
+
+    public void insertOsaka(View view){
+        String traffic = text_Traffic.getText().toString();
+        String trafiicDetail = text_TrafficDetail.getText().toString();
+        String day = text_Day.getText().toString();
+
+        StringBuilder sb = new StringBuilder();
+        for(Food f: dataList){
+            sb.append(f.getfName()).append("\n")
+                    .append(f.getfPhone()).append("\n")
+                    .append(f.getfAddress());
+        }
+
+
+
+    }
+
 
 
 

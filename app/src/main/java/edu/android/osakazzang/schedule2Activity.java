@@ -16,10 +16,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
+import static edu.android.osakazzang.schedule1Activity.*;
 
-public class schedule2Activity extends AppCompatActivity
-        implements TotalFragment.TotalListner{
+public class schedule2Activity extends AppCompatActivity {
 
     private static final String TAG = "tag";
     /**
@@ -37,7 +38,7 @@ public class schedule2Activity extends AppCompatActivity
      */
     private ViewPager mViewPager;
 
-    public static final String KEY_EXTRA_CONTACT_INDEX = "extra_contact_index";
+//    public static final String KEY_EXTRA_CONTACT_INDEX = "extra_contact_index";
     private List<Day> days;
     private int dateIndex;
 
@@ -91,16 +92,49 @@ public class schedule2Activity extends AppCompatActivity
             public void onClick(View view) {
                 Snackbar.make(view, "스케줄 닫기", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                findViewById(R.id.fab);
 
                 Log.i("mytag", "***** schedule2Activity:: dateIndex=" + dateIndex);
                 TotalFragment dlg = TotalFragment.newInstance(dateIndex);
+
+                Log.i("logTag2", "dlg = " + dlg);
+                List<Food> dataList = new ArrayList<>();
+
+                TravelLab travelLab = TravelLab.getInstance();
+                List<Travel> list = travelLab.getList();
+                for (int i = 0; i< list.size(); i++) {
+                    Travel travel = list.get(i);
+                    if (travel.isSelected()) {
+                        Food f = new Food(0, travel.getName(), travel.getPhone(), travel.getAdress(), 10, 0, 0);
+                        dataList.add(f);
+                    }
+                }
+
+                StayLab stayLab = StayLab.getInstance();
+                List<Stay> list2 = stayLab.getList();
+                for (int i = 0; i < list2.size(); i++){
+                    Stay stay = list2.get(i);
+                    if (stay.isSelected2()){
+                        Food f = new Food(0, stay.getName(), stay.getPhone(), stay.getLocation(), 10, 0, 0);
+                        dataList.add(f);
+                    }
+                }
+
+                RestaurantLab restaurantLab = RestaurantLab.getInstance();
+                List<Restaurant> list3 = restaurantLab.getInstance().find(4);
+                for (int i = 0; i < list3.size(); i++){
+                    Restaurant restaurant = list3.get(i);
+                    if (restaurant.isSelected3()){
+                        Food f = new Food(0, restaurant.getName(), restaurant.getPhone(), restaurant.getAddress(), 10, 0, 0);
+                        dataList.add(f);
+                    }
+                }
+
+                Log.i("logTag2", "dataList : " + dataList);
+                dlg.setData(dataList);
                 dlg.show(getSupportFragmentManager(), "Total_dlg");
 
             }
         });
-        Intent intent = getIntent();
-        dateIndex = intent.getIntExtra(schedule1Activity.KEY_EXTRA_CONTACT_INDEX, 0);
 
     }
 
@@ -148,9 +182,7 @@ public class schedule2Activity extends AppCompatActivity
                     // FIXME: 왜 newInstance() 매개변수가 4일까?
                     return RestaurantFragment.newInstance(4);
                 default:
-                    return TravelFragment.newInstance(
-
-                            00);
+                    return TravelFragment.newInstance(00);
             }
 
         }

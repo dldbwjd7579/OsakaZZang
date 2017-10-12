@@ -12,6 +12,8 @@ public class Food implements Serializable{
     private String fPhone;
     private String fAddress;
     private int fPrice;
+    private int fOpen;
+    private int fClose;
     private double fLat;
     private double fLng;
 

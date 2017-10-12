@@ -1,7 +1,9 @@
 package edu.android.osakazzang;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +20,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+
 public class schedule1Activity extends AppCompatActivity {
 
     public String departYear, departMonth, departDay, arrivalYear, arrivalMonth, arrivalDay;
@@ -27,11 +30,20 @@ public class schedule1Activity extends AppCompatActivity {
     private int dayIndex;
     private int startIndex;
 
+    public static int dYear;
+    public static int dMonth;
+    public static int dDay;
+
+    public static int aYear;
+    public static int aMonth;
+    public static int aDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.schedule_main2);
+
+        FragmentManager fm = getSupportFragmentManager();
 
         DayLab lab = DayLab.getInstance();
         days = lab.getDays();
@@ -40,16 +52,22 @@ public class schedule1Activity extends AppCompatActivity {
         Intent intent = getIntent();
         // 년 월 일 // 출발날짜 // 도착날짜 데이터를 받음
         int KEY_DEPART_YEAR = intent.getIntExtra(AirplaneActivity.KEY_ARRIVAL_YEAR, 0);
+        this.dYear = KEY_DEPART_YEAR;
         int KEY_DEPART_MONTH = intent.getIntExtra(AirplaneActivity.KEY_DEPART_MONTH, 1);
+        this.dMonth = KEY_DEPART_MONTH;
         int KEY_DEPART_DAY = intent.getIntExtra(AirplaneActivity.KEY_DEPART_DAY,2);
+        this.dDay = KEY_DEPART_DAY;
         int KEY_ARRIVAL_YEAR = intent.getIntExtra(AirplaneActivity.KEY_ARRIVAL_YEAR,3);
+        this.aYear = KEY_ARRIVAL_YEAR;
         int KEY_ARRIAVAL_MONTH = intent.getIntExtra(AirplaneActivity.KEY_ARRIAVAL_MONTH,4);
+        this.aMonth = KEY_ARRIAVAL_MONTH;
         int KEY_ARRIVAL_DAY = intent.getIntExtra(AirplaneActivity.KEY_ARRIVAL_DAY,5);
+        this.aDay = KEY_ARRIVAL_DAY;
 
         // 출발날짜와 도착날짜를 day 저장하여 onBindViewHolder 에서 세팅해서 뿌려줌
-        Calendar start = new GregorianCalendar(KEY_DEPART_YEAR, KEY_DEPART_MONTH, KEY_DEPART_DAY);
+        Calendar start = new GregorianCalendar(dYear, dMonth, dDay);
         Date startDate = start.getTime();
-        Calendar end = new GregorianCalendar(KEY_ARRIVAL_YEAR, KEY_ARRIAVAL_MONTH, KEY_ARRIVAL_DAY);
+        Calendar end = new GregorianCalendar(aYear, aMonth, aDay);
         Date endDate = end.getTime();
         days = lab.make(startDate, endDate);
 
@@ -64,14 +82,16 @@ public class schedule1Activity extends AppCompatActivity {
 //        Intent intent = getIntent();
         dayIndex = intent.getIntExtra(schedule1Activity.KEY_EXTRA_CONTACT_INDEX, 0);
 
-
     }
+
 
     public void next(View view) {
 
         Intent intent  = new Intent(this, TotalActivity.class);
         startActivity(intent);
     }
+
+
 
     public class DayAdapter extends RecyclerView.Adapter<DayViewHolder>{
 
@@ -137,5 +157,8 @@ public class schedule1Activity extends AppCompatActivity {
 
 
     }
+
+
+
 
 }

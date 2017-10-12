@@ -130,6 +130,11 @@ public class ShipActivity extends AppCompatActivity implements
 
     }
 
+    public void next(View view) {
+
+
+    }
+
     public class GetShipInfoTask extends AsyncTask<String, Void, String>{
 
         @Override
@@ -286,11 +291,6 @@ public class ShipActivity extends AppCompatActivity implements
             });
         }
     }
-
-
-
-
-
 
 
 

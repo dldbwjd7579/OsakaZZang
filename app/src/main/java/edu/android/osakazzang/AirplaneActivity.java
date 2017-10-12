@@ -381,5 +381,7 @@ public class AirplaneActivity extends AppCompatActivity
         intent.putExtra(KEY_ARRIVAL_DAY, arrivalDay);
         startActivity(intent);
 
+
+
     }
 }
