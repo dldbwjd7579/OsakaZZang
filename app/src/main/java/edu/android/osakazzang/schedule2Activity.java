@@ -55,6 +55,12 @@ public class schedule2Activity extends AppCompatActivity {
     List<Restaurant> restaurantList = RestaurantLab.getInstance().find(4);
 
 
+    ////////////////////
+    private Day selectedDay;
+    ////////////////////
+
+
+    // 관광지,식당 뒤로갈때 false로 처리
     @Override
     public void onBackPressed() {
         for (Travel t : travelList) {
@@ -74,8 +80,23 @@ public class schedule2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.schedule_main1);
 
+        ////////////////////
+        Intent intent = getIntent();
+        dateIndex = intent.getIntExtra(schedule1Activity.KEY_EXTRA_CONTACT_INDEX, 0);
+        Log.i("mytag", "***** dateIndex=" + dateIndex);
+        // 스케줄1에서 스케줄2로 날짜정보(DataIndex)를 보낸것을 여기서 받음
+        // > TotalFragment에서 dateIndex 정보를 사용해서 DayLab에서 꺼냄
+
+//        DayLab dayLab = DayLab.getInstance();
+//        List<Day> dayList = dayLab.getDayList();
+//        selectedDay = dayList.get(dateIndex);
+//        Log.i("mytag", "***** " + selectedDay.getMonth() + "/" + selectedDay.getDay());
+        ////////////////////
+
+
+        // 툴바 설정
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar); // 툴바 설정
+        setSupportActionBar(toolbar);
 
         adapter = new TravelPagerAdapter(getSupportFragmentManager());
 
@@ -86,6 +107,7 @@ public class schedule2Activity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        // FloatingActionButton을 여기서 처리함
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +121,7 @@ public class schedule2Activity extends AppCompatActivity {
                 Log.i("logTag2", "dlg = " + dlg);
                 List<Food> dataList = new ArrayList<>();
 
-                TravelLab travelLab = TravelLab.getInstance();
+                TravelLab travelLab = TravelLab.getInstance(); // 관광지 Instance를 가져옴
                 List<Travel> list = travelLab.getList();
                 for (int i = 0; i< list.size(); i++) {
                     Travel travel = list.get(i);
@@ -109,7 +131,7 @@ public class schedule2Activity extends AppCompatActivity {
                     }
                 }
 
-                StayLab stayLab = StayLab.getInstance();
+                StayLab stayLab = StayLab.getInstance(); // 호텔 Instance를 가져옴
                 List<Stay> list2 = stayLab.getList();
                 for (int i = 0; i < list2.size(); i++){
                     Stay stay = list2.get(i);
@@ -119,8 +141,8 @@ public class schedule2Activity extends AppCompatActivity {
                     }
                 }
 
-                RestaurantLab restaurantLab = RestaurantLab.getInstance();
-                List<Restaurant> list3 = restaurantLab.getInstance().find(4);
+                RestaurantLab restaurantLab = RestaurantLab.getInstance(); // 맛집 Instance를 가져옴
+                List<Restaurant> list3 = restaurantLab.getInstance().find(4); //find는 도착시간을 의미
                 for (int i = 0; i < list3.size(); i++){
                     Restaurant restaurant = list3.get(i);
                     if (restaurant.isSelected3()){
@@ -129,6 +151,7 @@ public class schedule2Activity extends AppCompatActivity {
                     }
                 }
 
+                // 다이얼로그를 보여줌
                 Log.i("logTag2", "dataList : " + dataList);
                 dlg.setData(dataList);
                 dlg.show(getSupportFragmentManager(), "Total_dlg");
@@ -139,9 +162,9 @@ public class schedule2Activity extends AppCompatActivity {
     }
 
 
+    // 옵션메뉴
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -159,9 +182,11 @@ public class schedule2Activity extends AppCompatActivity {
 
 
     /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
+     * TapActivity활용해서 관광지, 숙박, 맛집 탭을 생성
+     * 관광지,맛집은 도착시간을 매개변수로 받고
+     * 호텔은 포지션값을 받음
      */
+
     public class TravelPagerAdapter extends FragmentPagerAdapter {
 
         public TravelPagerAdapter(FragmentManager fm) {
@@ -187,11 +212,15 @@ public class schedule2Activity extends AppCompatActivity {
 
         }
 
+
+        // 탭의 개수를 3개로 정함
         @Override
         public int getCount() {
 
             return 3;
         }
+
+        // 관광지,숙박,맛집 타이틀이름을 결정함
 
         @Override
         public CharSequence getPageTitle(int position) {

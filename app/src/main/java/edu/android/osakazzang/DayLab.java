@@ -30,24 +30,24 @@ import java.util.List;
         };
 
         private static DayLab instance;
-        private List<Day> days;
+        private List<Day> dayList;
 
         private DayLab() {
-            days = new ArrayList<>();
-            DummyData();
+//            dayList = new ArrayList<>();
+//            DummyData();
         } // end DayLab
 
-        private void DummyData() {
-            for (int i = 0; i < 10; i++) { // i: 도착날짜 - 출발날짜
-                Day d = new Day(8, 20 + i, RES_IDS[i % RES_IDS.length]);
-                days.add(d);
-            }
-            for (int i = 0; i < 10; i++) { // i: 도착날짜 - 출발날짜
-                Day d = new Day(9, 1 + i, RES_IDS[i % RES_IDS.length]);
-                days.add(d);
-            }
-
-        }// end Dummy Data()
+//        private void DummyData() {
+//            for (int i = 0; i < 10; i++) { // i: 도착날짜 - 출발날짜
+//                Day d = new Day(8, 20 + i, RES_IDS[i % RES_IDS.length]);
+//                dayList.add(d);
+//            }
+//            for (int i = 0; i < 10; i++) { // i: 도착날짜 - 출발날짜
+//                Day d = new Day(9, 1 + i, RES_IDS[i % RES_IDS.length]);
+//                dayList.add(d);
+//            }
+//
+//        }// end Dummy Data()
 
         public  static DayLab getInstance() {
             if (instance == null){
@@ -56,20 +56,20 @@ import java.util.List;
             return  instance;
         }
 
-        public List<Day> getDays() {
-            return days;
+        public List<Day> getDayList() {
+            return dayList;
 
         }
 
         public List<Day> make(Date startDate, Date endDate) {
-            List<Day> list = new ArrayList<>();
+            dayList = new ArrayList<>();
 
             long start = startDate.getTime();
             long end = endDate.getTime();
 
             long between = end - start;
             int days = (int) (between / (24 * 60 * 60 * 1000) + 1);
-            Log.i("tag", "days: " + days);
+            Log.i("tag", "dayList: " + days);
 
             if (between >= 0) {
                 Calendar cal = Calendar.getInstance();
@@ -77,20 +77,20 @@ import java.util.List;
                 long nextDay = start;
                 for (int i = 0; i < days; i++) {
                     // FIXME: ArrayIndexOutOfBoundsException 가능성 있음
-                    Day day = new Day(cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH), RES_IDS[i]);
-                    list.add(day);
+                    Day day = new Day(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH), RES_IDS[i]);
+                    dayList.add(day);
 
                     nextDay += 24 * 60 * 60 * 1000;
                     cal.setTime(new Date(nextDay));
                 }
             }
 
-            return list;
+            return dayList;
         }
 
         public List<Day> getListBetweenDays(int startMonth, int startDay, int endMonth, int endDay) {
             List<Day> list = new ArrayList<>();
-            for (Day day : days) {
+            for (Day day : dayList) {
                 if (startDay <= day.getMonth() && day.getMonth() <= endMonth
                         && startDay <= day.getDay() && day.getDay() <= endDay) {
                     list.add(day);

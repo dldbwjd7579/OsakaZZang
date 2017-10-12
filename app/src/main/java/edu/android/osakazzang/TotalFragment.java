@@ -4,7 +4,6 @@ package edu.android.osakazzang;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -17,7 +16,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -116,25 +114,34 @@ public class TotalFragment extends DialogFragment {
         text_Day = view.findViewById(R.id.text_Day); //날짜
         insert =  (Button)view.findViewById(R.id.btn_total);
 
-        List<Day> list4 =  dayLab.getDays();
+        List<Day> list4 =  dayLab.getDayList();
         StringBuffer dayBuffer = new StringBuffer();
         // TODO: getArguments() 메소드 호출
         // 프래그먼트 아규먼트에 저장된 날짜 인덱스를 꺼내서 멤버변수 datePosition에 저장
         // list4.get(datePosition) 호출해서 날짜 정보 읽어서 텍스트뷰에 씀
         Bundle args = getArguments();
-        datePosition = args.getInt("key_date_position");
+        datePosition = args.getInt("key_date_position"); // Bundle에서  포지션값을 꺼냄
         Log.i(TAG, "datePosition : " + datePosition);
 
-        Calendar start = new GregorianCalendar(dYear, dMonth, dDay);
-        Date startDate = start.getTime();
-        Calendar end = new GregorianCalendar(aYear, aMonth, aDay);
-        Date endDate = end.getTime();
-        List<Day> dayList = dayLab.make(startDate, endDate);
-        Day day = dayList.get(datePosition);
+        // FIXME: 이 코드가 왜 있지? 이유를 모르겠음!!! >>>>>
+//        Calendar start = new GregorianCalendar(dYear, dMonth, dDay);
+//        Date startDate = start.getTime();
+//        Calendar end = new GregorianCalendar(aYear, aMonth, aDay);
+//        Date endDate = end.getTime();
+//        List<Day> dayList = dayLab.make(startDate, endDate);
+//        Day day = dayList.get(datePosition);
 
 //        Log.i("tag", day.getMonth() + "/" + day.getDay());
 
-        text_Day.setText(dYear+ "년" + (dMonth+1) + "월 " + dDay + "일");
+//        text_Day.setText(dYear+ "년" + (dMonth+1) + "월 " + dDay + "일");
+        // FIXME: <<<<< 여기까지
+
+        // DayLab에서 Instance를 가져옴
+        DayLab dayLab = DayLab.getInstance();
+        List<Day> dayList = dayLab.getDayList();
+        Day selectedDay = dayList.get(datePosition);
+        Log.i("mytag", "***** TotalFragment:: selectedDay=" + selectedDay);
+        text_Day.setText(selectedDay.toString());
 
         /*List<Travel> list = travelLab.getList();
         for (int i = 0; i< list.size(); i++) {
@@ -183,6 +190,7 @@ public class TotalFragment extends DialogFragment {
 
     }
 
+    // DB에 insert 해야하는 정보
     public void insertOsaka(View view){
         String traffic = text_Traffic.getText().toString();
         String trafiicDetail = text_TrafficDetail.getText().toString();

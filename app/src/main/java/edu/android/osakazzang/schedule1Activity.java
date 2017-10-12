@@ -46,7 +46,7 @@ public class schedule1Activity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
 
         DayLab lab = DayLab.getInstance();
-        days = lab.getDays();
+//        days = lab.getDayList();
 
         // AirplaneActivity가 보내준 인텐트를 얻어옴
         Intent intent = getIntent();
@@ -85,6 +85,7 @@ public class schedule1Activity extends AppCompatActivity {
     }
 
 
+    // totalActivity에 넘어가는 버튼
     public void next(View view) {
 
         Intent intent  = new Intent(this, TotalActivity.class);
@@ -104,9 +105,9 @@ public class schedule1Activity extends AppCompatActivity {
             return viewHolder;
         }
 
+        //intent로 받은 날짜를 보여주는 ViewHolder
         @Override
         public void onBindViewHolder(DayViewHolder holder, int position) {
-
 
             Day day = days.get(position);
             holder.imageView.setImageResource(day.getImageId());
@@ -133,7 +134,7 @@ public class schedule1Activity extends AppCompatActivity {
             this.index = index;
         }
 
-        public DayViewHolder(View itemView) { // 이미지,텍스트 아이템을 생성
+        public DayViewHolder(View itemView) { // 날짜이미지,month,day 아이템을 생성
             super(itemView);
 
             imageView = itemView.findViewById(R.id.imageCard);
