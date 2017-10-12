@@ -32,8 +32,8 @@ public class OsakaDbHepler extends SQLiteOpenHelper{
             + COL_Osaka_HOMEAPGE + " text not null, "
             + COL_Osaka_SIGHTOPEN + " integer, "
             + COL_Osaka_SIGHTCLOSE + " integer, "
-            + COL_Osaka_SIGHTLAT + " text not null, "
-            + COL_Osaka_SIGHTLNG + " text not null, "
+            + COL_Osaka_SIGHTLAT + " real not null, "
+            + COL_Osaka_SIGHTLNG + " real not null, "
             + COL_Osaka_SIGHTDATE + " integer DEFAULT (datetime('now','localtime'))"
             + ")";
 
@@ -100,8 +100,8 @@ public class OsakaDbHepler extends SQLiteOpenHelper{
 
     }
 
-    public List<Food> select(){
-        List<Food> list = new ArrayList<>();
+    public List<Osaka> select(){
+        List<Osaka> list = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_NAME,
@@ -126,15 +126,16 @@ public class OsakaDbHepler extends SQLiteOpenHelper{
             double lng = cursor.getDouble(8);
             long date = cursor.getLong(9);
 
-            Food food = new Food(name, phone, address,lat,lng);
-            list.add(food);
+            Osaka osaka = new Osaka(id, name, address, phone, home, open, close, lat, lng, date);
+            list.add(osaka);
 
             cursor.moveToNext();
         }
 
+        cursor.close();
+
         return list;
 
     }
-
 
 }

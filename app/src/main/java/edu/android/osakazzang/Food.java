@@ -9,8 +9,8 @@ import java.io.Serializable;
 public class Food implements Serializable{
     private int fPhoto;
     private String fName;
-    private String fPhone;
     private String fAddress;
+    private String fPhone;
     private int fPrice;
     private int fOpen;
     private int fClose;
@@ -19,19 +19,19 @@ public class Food implements Serializable{
 
     public Food(){}
 
-    public Food(String fName, String fPhone, String fAddress, double fLat, double fLng) {
+    public Food(String fName, String fAddress, String fPhone, double fLat, double fLng) {
         this.fName = fName;
-        this.fPhone = fPhone;
         this.fAddress = fAddress;
+        this.fPhone = fPhone;
         this.fLat = fLat;
         this.fLng = fLng;
     }
 
-    public Food(int fPhoto, String fName, String fPhone, String fAddress, int fPrice, double fLat, double fLng) {
+    public Food(int fPhoto, String fName, String fAddress, String fPhone, int fPrice, double fLat, double fLng) {
         this.fPhoto = fPhoto;
         this.fName = fName;
-        this.fPhone = fPhone;
         this.fAddress = fAddress;
+        this.fPhone = fPhone;
         this.fPrice = fPrice;
         this.fLat = fLat;
         this.fLng = fLng;
@@ -69,10 +69,8 @@ public class Food implements Serializable{
     public String toString() {
         String s = "{"
                 + "fName:" + fName + ", "
-                + "fPhone:" + fPhone + ", "
-                + "fAddress:" + fAddress + ", "
-                + "fOpen:" + fOpen + ", "
-                + "fClose:" + fClose + ", "
+                + "fPhone:" + fAddress + ", "
+                + "fAddress:" + fPhone + ", "
                 + "fLat:" + fLat + ", "
                 + "fLng:" + fLng
                 + "}";

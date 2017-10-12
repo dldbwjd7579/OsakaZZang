@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -64,6 +66,8 @@ public class TotalFragment extends DialogFragment {
     private TextView text_Total;
 
     private Button insert;
+    private Button btn_select;
+    private TextView selectTV;
 
     private TotalListner listner;
 
@@ -155,29 +159,58 @@ public class TotalFragment extends DialogFragment {
             }
         });
 
+        selectTV = view.findViewById(R.id.selectAll);
+        btn_select = view.findViewById(R.id.btn_select);
+        btn_select.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectAll(view);
+            }
+        });
+
         return builder.create();
 
     }
 
     // DB에 insert 해야하는 정보
     public void insertOsaka(View view){
-        String traffic = text_Traffic.getText().toString();
-        String trafiicDetail = text_TrafficDetail.getText().toString();
-        String day = text_Day.getText().toString();
+
+        // TODO : 생성자 생성 (traffic, trafficDetail, day, dataList 의 정보들을 전달)
+
+        OsakaDbHepler dbHepler = new OsakaDbHepler(getContext());
+
+        // 로그가 여기 까지는 들어옴
+
+        for(int i = 0; i < dataList.size(); i++) {
+            Log.i("mytag", "***** [" + i + "] ");
+            Food food = dataList.get(i);
+            Log.i("mytag", "***** [" + i + "] " + food.toString());
+            Osaka osaka = new Osaka();
+            osaka.setSIGHTNAME(food.getfName());
+            osaka.setSIGHTADDRESS(food.getfAddress());
+            osaka.setSIGHTPHONE(food.getfPhone());
+            osaka.setSIGHTLAT(food.getfLat());
+            osaka.setSIGHTLNG(food.getfLng());
+            osaka.setHOMEPAGE("");
+
+            dbHepler.insert(osaka);
+        } // end for()
+
+    } // end insert
+
+    public void selectAll(View view){
+        OsakaDbHepler dbHepler = new OsakaDbHepler(getContext());
+        List<Osaka> list = dbHepler.select();
 
         StringBuilder sb = new StringBuilder();
-        for(Food f: dataList){
-            sb.append(f.getfName()).append("\n")
-                    .append(f.getfPhone()).append("\n")
-                    .append(f.getfAddress());
+
+        for(Osaka f : list){
+            sb.append(f.toString()).append("\n");
         }
 
-
-
+        selectTV.setText(sb);
     }
 
-
-
-
-
 }
+// love the way you lie, the monster
+// see you again
