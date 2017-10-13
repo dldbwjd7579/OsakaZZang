@@ -80,7 +80,7 @@ public class FoodLab {
                         sightLng = jsonObject.getDouble("SIGHTLNG");
                         sightLat = jsonObject.getDouble("SIGHTLAT");
 
-                        Food f = new Food(R.drawable.cappuccino, sightName, sightPhone, sightAddress, 100, sightLat, sightLng);
+                        Food f = new Food(R.drawable.icon_food, sightName, sightPhone, sightAddress, 100, sightLat, sightLng);
                         foodList.add(f);
                     }
 

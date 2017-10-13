@@ -83,7 +83,7 @@ public class AccommoLab {//숙박 Dummy Data Lab Class
                         sightLng = jsonObject.getDouble("SIGHTLNG");
                         sightLat = jsonObject.getDouble("SIGHTLAT");
 
-                        Accommo a = new Accommo(R.drawable.carrier, sightName, sightPhone, sightAddress, 100, sightLat, sightLng);
+                        Accommo a = new Accommo(R.drawable.icon_hotel, sightName, sightPhone, sightAddress, 100, sightLat, sightLng);
                         accommoList.add(a);
                     }
 
