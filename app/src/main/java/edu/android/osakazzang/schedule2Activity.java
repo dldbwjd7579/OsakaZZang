@@ -47,12 +47,12 @@ public class schedule2Activity extends AppCompatActivity {
 
     // FIXME: find() 매개변수를 5로 강제로 넣고 있음. 왜냐하면 TravelFragment.newInstance(5);라고 호출했기 때문에
     // 수정해야 함
-    List<Travel> travelList = TravelLab.getInstance().find(5);
+    List<Place> travelList = PlaceLab.getInstance(this).getPlaceList();
 
     List<Accommo> stayList = AccommoLab.getInstance(this).getAccommoList();
 
     // FIXME: 왜 find() 매개변수로 4를 주고 있을까?
-    List<Restaurant> restaurantList = RestaurantLab.getInstance().find(4);
+    List<Food> restaurantList = FoodLab.getInstance(this).getFoodList();
 
 
     private String trafficType;
@@ -61,11 +61,15 @@ public class schedule2Activity extends AppCompatActivity {
     // 관광지,식당 뒤로갈때 false로 처리
     @Override
     public void onBackPressed() {
-        for (Travel t : travelList) {
+        for (Place t : travelList) {
             t.setSelected(false);
         }
 
-        for (Restaurant r : restaurantList) {
+        for(Accommo a : stayList){
+            a.setSelected2(false);
+        }
+
+        for (Food r : restaurantList) {
             r.setSelected3(false);
         }
 
@@ -125,12 +129,12 @@ public class schedule2Activity extends AppCompatActivity {
                 Log.i("logTag2", "dlg = " + dlg);
                 List<Food> dataList = new ArrayList<>();
 
-                TravelLab travelLab = TravelLab.getInstance(); // 관광지 Instance를 가져옴
-                List<Travel> list = travelLab.getList();
+                PlaceLab travelLab = PlaceLab.getInstance(schedule2Activity.this); // 관광지 Instance를 가져옴
+                List<Place> list = travelLab.getPlaceList();
                 for (int i = 0; i< list.size(); i++) {
-                    Travel travel = list.get(i);
+                    Place travel = list.get(i);
                     if (travel.isSelected()) {
-                        Food f = new Food(0, travel.getName(), travel.getPhone(), travel.getAdress(), 10, 0, 0);
+                        Food f = new Food(0, travel.getpName(), travel.getpPhone(), travel.getpAddress(), 10, 0, 0);
                         dataList.add(f);
                     }
                 }
@@ -145,12 +149,12 @@ public class schedule2Activity extends AppCompatActivity {
                     }
                 }
 
-                RestaurantLab restaurantLab = RestaurantLab.getInstance(); // 맛집 Instance를 가져옴
-                List<Restaurant> list3 = restaurantLab.getInstance().find(4); //find는 도착시간을 의미
+                FoodLab restaurantLab = FoodLab.getInstance(schedule2Activity.this); // 맛집 Instance를 가져옴
+                List<Food> list3 = restaurantLab.getFoodList(); //find는 도착시간을 의미
                 for (int i = 0; i < list3.size(); i++){
-                    Restaurant restaurant = list3.get(i);
+                    Food restaurant = list3.get(i);
                     if (restaurant.isSelected3()){
-                        Food f = new Food(0, restaurant.getName(), restaurant.getPhone(), restaurant.getAddress(), 10, 0, 0);
+                        Food f = new Food(0, restaurant.getfName(), restaurant.getfPhone(), restaurant.getfAddress(), 10, 0, 0);
                         dataList.add(f);
                     }
                 }

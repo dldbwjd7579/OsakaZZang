@@ -83,7 +83,6 @@ public class NearActivity extends AppCompatActivity
         accommoList = (List<Accommo>) intent.getSerializableExtra("accommoList");
         placeList = (List<Place>) intent.getSerializableExtra("placeList");
         foodList = (List<Food>) intent.getSerializableExtra("foodList");
-        Log.i("logTag", "data 제대로 왔나    :::   " + accommoList.size() + ", " + placeList.size() + ", " + foodList.size());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
