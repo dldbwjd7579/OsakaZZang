@@ -164,9 +164,9 @@ public class schedule2Activity extends AppCompatActivity {
                 dlg.setData(dataList);
                 dlg.show(getSupportFragmentManager(), "Total_dlg");
 
+
             }
         });
-
     }
 
 

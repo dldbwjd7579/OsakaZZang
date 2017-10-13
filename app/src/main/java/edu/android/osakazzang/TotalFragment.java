@@ -1,12 +1,14 @@
 package edu.android.osakazzang;
 
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +31,10 @@ import static edu.android.osakazzang.schedule1Activity.*;
  * A simple {@link Fragment} subclass.
  */
 public class TotalFragment extends DialogFragment {
+    interface EndListener{
+        void finishActivity(boolean b);
+    }
+    private EndListener listener;
 
     private static final String TAG = "edu.android";
     private TravelLab travelLab = TravelLab.getInstance();
@@ -75,6 +81,9 @@ public class TotalFragment extends DialogFragment {
     private String dayy;
     private String monthy;
 
+    private boolean fin = false;
+    private Context context;
+
     public void setData(List<Food> list){
         dataList = list;
         Log.i("logTag2", "fragment에 전달된 list : " + list);
@@ -92,6 +101,7 @@ public class TotalFragment extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        this.context = context;
         if (context instanceof TotalListner){
             listner = (TotalListner) context;
         }
@@ -104,7 +114,7 @@ public class TotalFragment extends DialogFragment {
     }
 
     public Dialog onCreateDialog(Bundle savedInstanceState){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View view = inflater.inflate(R.layout.fragment_total, null);
@@ -153,9 +163,27 @@ public class TotalFragment extends DialogFragment {
 
         insert.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                insertOsaka(view);
-                //////누르면 끝나게 해야되는데
+            public void onClick(final View view) {
+                AlertDialog.Builder dlgBuilder = new AlertDialog.Builder(getContext());
+                dlgBuilder.setTitle("저장 확인");
+                dlgBuilder.setMessage("선택 완료 하시겠습니까?");
+                dlgBuilder.setNegativeButton("네", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        insertOsaka(view);
+                        FragmentManager fm = getActivity().getSupportFragmentManager();
+                        fm.beginTransaction().remove(TotalFragment.this).commit();
+                    }
+                });
+                dlgBuilder.setPositiveButton("아니오", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                });
+
+                AlertDialog dlg = dlgBuilder.create();
+                dlg.show();
+
             }
         });
 
@@ -170,6 +198,14 @@ public class TotalFragment extends DialogFragment {
 
         return builder.create();
 
+    }
+
+    public void endPlease(){
+        if(context instanceof EndListener){
+            fin = true;
+            listener = (EndListener) context;
+            listener.finishActivity(fin);
+        }
     }
 
     // DB에 insert 해야하는 정보
