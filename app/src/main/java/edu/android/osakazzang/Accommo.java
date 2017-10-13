@@ -15,6 +15,8 @@ public class Accommo implements Serializable{ //숙박 Dummy Data Model Class
     private double aLat;
     private double aLng;
 
+    private boolean selected2;
+
     public Accommo(int aPhoto, String aName, String aPhone, String aAddress, int aPrice, double aLat, double aLng) {
         this.aPhoto = aPhoto;
         this.aName = aName;
@@ -23,6 +25,14 @@ public class Accommo implements Serializable{ //숙박 Dummy Data Model Class
         this.aPrice = aPrice;
         this.aLat = aLat;
         this.aLng = aLng;
+    }
+
+    public boolean isSelected2() {
+        return selected2;
+    }
+
+    public void setSelected2(boolean selected2) {
+        this.selected2 = selected2;
     }
 
     public int getaPhoto() {

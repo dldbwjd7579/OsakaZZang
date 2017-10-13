@@ -49,7 +49,7 @@ public class schedule2Activity extends AppCompatActivity {
     // 수정해야 함
     List<Travel> travelList = TravelLab.getInstance().find(5);
 
-    List<Stay> stayList = StayLab.getInstance().getList();
+    List<Accommo> stayList = AccommoLab.getInstance(this).getAccommoList();
 
     // FIXME: 왜 find() 매개변수로 4를 주고 있을까?
     List<Restaurant> restaurantList = RestaurantLab.getInstance().find(4);
@@ -135,12 +135,12 @@ public class schedule2Activity extends AppCompatActivity {
                     }
                 }
 
-                StayLab stayLab = StayLab.getInstance(); // 호텔 Instance를 가져옴
-                List<Stay> list2 = stayLab.getList();
+                AccommoLab accommoLab = AccommoLab.getInstance(schedule2Activity.this); // 호텔 Instance를 가져옴
+                List<Accommo> list2 = accommoLab.getAccommoList();
                 for (int i = 0; i < list2.size(); i++){
-                    Stay stay = list2.get(i);
-                    if (stay.isSelected2()){
-                        Food f = new Food(0, stay.getName(), stay.getPhone(), stay.getLocation(), 10, 0, 0);
+                    Accommo acco = list2.get(i);
+                    if (acco.isSelected2()){
+                        Food f = new Food(0, acco.getaName(), acco.getaPhone(), acco.getaAddress(), 10, 0, 0);
                         dataList.add(f);
                     }
                 }

@@ -116,7 +116,7 @@ public class RestaurantFragment extends Fragment {
         public restaurantItemViewHolder(View itemView) {
             super(itemView);
             this.imageView = itemView.findViewById(R.id.imageView3);
-            this.textName = itemView.findViewById(R.id.textName);
+            this.textName = itemView.findViewById(R.id.textStayName);
             this.textAdress = itemView.findViewById(R.id.textAddress);
             this.textPhone = itemView.findViewById(R.id.textPhone);
             this.textOpen = itemView.findViewById(R.id.textOpen);

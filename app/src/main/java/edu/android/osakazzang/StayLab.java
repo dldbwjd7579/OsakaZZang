@@ -10,11 +10,11 @@ import java.util.List;
 public class StayLab {
 
     private static StayLab instance;
-    private List<Stay> list;
+    private List<Accommo> list;
 
     private StayLab() {
         list = new ArrayList<>();
-        Stay s1 = new Stay("이름1" , "위치1", "전화번호1", "홈페이지1", "가격1", R.drawable.n1);
+        /*Stay s1 = new Stay("이름1" , "위치1", "전화번호1", "홈페이지1", "가격1", R.drawable.n1);
         list.add(s1);
         Stay s2 = new Stay("이름2" , "위치2", "전화번호2", "홈페이지2", "가격2", R.drawable.n2);
         list.add(s2);
@@ -25,7 +25,9 @@ public class StayLab {
         Stay s5 = new Stay("이름5" , "위치5", "전화번호5", "홈페이지5", "가격5", R.drawable.n3);
         list.add(s3);
         Stay s6 = new Stay("이름6" , "위치6", "전화번호6", "홈페이지6", "가격6", R.drawable.n3);
-        list.add(s3);
+        list.add(s3);*/
+
+
     }
 
     public static StayLab getInstance() {
@@ -36,7 +38,7 @@ public class StayLab {
         return instance;
     }
 
-    public List<Stay> getList() {
+    public List<Accommo> getList() {
         return  list;
     }
 }

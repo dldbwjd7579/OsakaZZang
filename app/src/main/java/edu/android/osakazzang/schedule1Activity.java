@@ -106,6 +106,7 @@ public class schedule1Activity extends AppCompatActivity {
             public void onClick(View v) {
                 OsakaDbHepler helper = new OsakaDbHepler(schedule1Activity.this);
                 List<Osaka> list = helper.select();
+
                 for(int i = 0; i < list.size(); i++) {
                     makeData(i);
                 }

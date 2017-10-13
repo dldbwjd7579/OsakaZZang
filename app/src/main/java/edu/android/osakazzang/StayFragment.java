@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +63,7 @@ public class StayFragment extends Fragment {
     }
 
     class StayRecyclerAdapter extends RecyclerView.Adapter<StayItemViewHolder>{
-        private StayLab lab = StayLab.getInstance();
+        private AccommoLab lab = AccommoLab.getInstance(getContext());
 
         @Override
         public StayItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -75,42 +76,43 @@ public class StayFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(StayItemViewHolder holder, final int position) {
-            Stay stay  = lab.getList().get(position);
-            holder.imageView.setImageResource(stay.getPhotoId());
-            holder.textView.setText(stay.getName());
-            holder.textView.setText(stay.getLocation());
-            holder.textView.setText(stay.getPhone());
-            holder.textView.setText(stay.getHttp());
-            holder.textView.setText(stay.getPrice());
+            Accommo a  = lab.getAccommoList().get(position);
+            holder.imageView.setImageResource(a.getaPhoto());
+            holder.textName.setText(a.getaName());
+            holder.textAddress.setText(a.getaAddress());
+            holder.textPhon.setText(a.getaPhone());
+            holder.textHttp.setText(""); //Http 없어서 일단 이렇게
             holder.StayCheck.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    lab.getList().get(position).setSelected2(((CheckBox) view).isChecked());
+                    lab.getAccommoList().get(position).setSelected2(((CheckBox) view).isChecked());
                 }
             });
         }
 
         @Override
         public int getItemCount() {
-            return lab.getList().size();
+            return lab.getAccommoList().size();
         }
     }
 
     class StayItemViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imageView;
-        private TextView textView;
+        private TextView textName;
+        private TextView textPhon;
+        private TextView textAddress;
+        private TextView textHttp;
         private CheckBox StayCheck;
 
         public StayItemViewHolder(View itemView) {
             super(itemView);
-            this.imageView = itemView.findViewById(R.id.imageView2);
-            this.textView = itemView.findViewById(R.id.text_name);
-            this.textView = itemView.findViewById(R.id.textLocation);
-            this.textView = itemView.findViewById(R.id.textPhone);
-            this.textView = itemView.findViewById(R.id.textHttp);
-            this.textView = itemView.findViewById(R.id.textPrice);
-            this.StayCheck = itemView.findViewById(R.id.StayCheck);
+            imageView = (ImageView)itemView.findViewById(R.id.imageView2);
+            textName = (TextView)itemView.findViewById(R.id.textStayName);
+            textAddress = (TextView)itemView.findViewById(R.id.textStayAddress);
+            textPhon = (TextView)itemView.findViewById(R.id.textStayPhone);
+            textHttp = (TextView)itemView.findViewById(R.id.textStayHttp);
+            StayCheck = (CheckBox)itemView.findViewById(R.id.StayCheckBox);
         }
     }
 
