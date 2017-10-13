@@ -115,8 +115,10 @@ public class schedule1Activity extends AppCompatActivity {
 
                 helper.deleteAll();
 
-                Intent intent2 = new Intent(schedule1Activity.this, MainActivity.class);
-                startActivity(intent2);
+                /*Intent intent2 = new Intent(schedule1Activity.this, MainActivity.class);
+                startActivity(intent2);*/
+
+                finish();
             }
         });
 
@@ -171,13 +173,12 @@ public class schedule1Activity extends AppCompatActivity {
                  userId = id;
 
                 Log.i("edu.android", "list.size : " + list.size());
-                for(int i = 0; i < list.size(); i++){
-                    Log.i("edu.android", "i : " + i);
-                    sightName = list.get(i).getSIGHTNAME();
-                    Log.i("edu.android", "2번째sightName : " + sightName);
-                }
-                                           choiceDate = "1";
-                 saveDate = (new Date()).toString();
+                Log.i("edu.android", "index : " + index);
+                sightName = list.get(index).getSIGHTNAME();
+                Log.i("edu.android", "2번째sightName : " + sightName);
+
+                choiceDate = "1";
+                saveDate = (new Date()).toString();
             } else{
                 Log.i("logTag", "@@@@ list가 제대로 오지 않았음  :   " + list.size());
             }
