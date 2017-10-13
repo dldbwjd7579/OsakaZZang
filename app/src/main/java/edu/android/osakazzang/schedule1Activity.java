@@ -212,6 +212,7 @@ public class schedule1Activity extends AppCompatActivity {
 
         Intent intent  = new Intent(this, TotalActivity.class);
         startActivity(intent);
+        finish();
     }
 
 

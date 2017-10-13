@@ -391,6 +391,6 @@ public class AirplaneActivity extends AppCompatActivity
         intent.putExtra("id", id);
 
         startActivity(intent);
-
+        finish();
     }
 }
