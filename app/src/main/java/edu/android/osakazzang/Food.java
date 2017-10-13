@@ -17,6 +17,8 @@ public class Food implements Serializable{
     private double fLat;
     private double fLng;
 
+    private boolean selected3;
+
     public Food(){}
 
     public Food(String fName, String fAddress, String fPhone, double fLat, double fLng) {
@@ -35,6 +37,14 @@ public class Food implements Serializable{
         this.fPrice = fPrice;
         this.fLat = fLat;
         this.fLng = fLng;
+    }
+
+    public boolean isSelected3() {
+        return selected3;
+    }
+
+    public void setSelected3(boolean selected3) {
+        this.selected3 = selected3;
     }
 
     public int getfPhoto() {

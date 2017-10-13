@@ -23,8 +23,8 @@ public class TravelFragment extends Fragment {
 
     private  static final String KEY_ARG1 = "arg_arrival_time"; // 포지션 저장값
 
-    private TravelLab lab = TravelLab.getInstance();
-    private List<Travel> itemList;
+    private PlaceLab lab = PlaceLab.getInstance(getContext());
+    private List<Place> itemList;
 
     private int arrivalTime; // 도착 시간(?)
 
@@ -41,7 +41,7 @@ public class TravelFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         arrivalTime = args.getInt(KEY_ARG1);
-        itemList = lab.find(arrivalTime);
+        itemList = lab.getPlaceList();
     }
 
     @Override
@@ -84,14 +84,14 @@ public class TravelFragment extends Fragment {
         @Override
         public void onBindViewHolder (TravelItemViewHolder holder, final int position) {
             // open <= 도착 시간 <= close인 여행지 정보만 추출
-            final Travel travel = itemList.get(position);
-            holder.imageView.setImageResource(travel.getImageId());
-            holder.textName.setText(travel.getName());
-            holder.textAddress.setText(travel.getAdress());
-            holder.textPhone.setText(travel.getPhone());
+            final Place p = itemList.get(position);
+            holder.imageView.setImageResource(p.getpPhoto());
+            holder.textName.setText(p.getpName());
+            holder.textAddress.setText(p.getpAddress());
+            holder.textPhone.setText(p.getpPhone());
             //setText안에는 문자열을 넣어야하므로 int일떄는 사용할 수 없다
-            holder.textOpen.setText("여는시간 " + travel.getOpen() + "시");
-            holder.textClose.setText("닫는시간 " + travel.getClose() + "시");
+//            holder.textOpen.setText("여는시간 " + travel.getOpen() + "시");
+//            holder.textClose.setText("닫는시간 " + travel.getClose() + "시");
             holder.travelCheck.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -104,7 +104,7 @@ public class TravelFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return lab.find(arrivalTime).size();
+            return lab.getPlaceList().size();
         }
         // RecyclerView의 아이템을 저장하고 보여주는 역할을 담당
 
@@ -120,12 +120,12 @@ public class TravelFragment extends Fragment {
 
         public TravelItemViewHolder(View itemView) {
             super(itemView);
-            this.imageView = itemView.findViewById(R.id.imageView);
-            this.textName = itemView.findViewById(R.id.text_name);
-            this.textAddress = itemView.findViewById(R.id.text_address);
-            this.textPhone = itemView.findViewById(R.id.textPhone);
-            this.textOpen= itemView.findViewById(R.id.textOpen);
-            this.textClose = itemView.findViewById(R.id.textClose);
+            this.imageView = itemView.findViewById(R.id.imageViewTravel);
+            this.textName = itemView.findViewById(R.id.textTravelName);
+            this.textAddress = itemView.findViewById(R.id.textTravelAddress);
+            this.textPhone = itemView.findViewById(R.id.textTravelPhone);
+            this.textOpen= itemView.findViewById(R.id.textTravelOpen);
+            this.textClose = itemView.findViewById(R.id.textTravelClose);
             this.travelCheck = itemView.findViewById(R.id.TravelCheck);
             // TODO: CheckBox 멤버 변수 찾기(findViewById)
 

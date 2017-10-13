@@ -15,6 +15,8 @@ public class Place implements Serializable{ //관광지 Dummy Data Model Class
     private double pLat;
     private double pLon;
 
+    private boolean selected;
+
     public Place() {
     }
     public Place(int pPhoto, String pName, String pPhone, String pAddress, int pPrice, double pLat, double pLon) {
@@ -25,6 +27,15 @@ public class Place implements Serializable{ //관광지 Dummy Data Model Class
         this.pPrice = pPrice;
         this.pLat = pLat;
         this.pLon = pLon;
+    }
+
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
     public int getpPhoto() {

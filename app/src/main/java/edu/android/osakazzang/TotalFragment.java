@@ -32,7 +32,6 @@ public class TotalFragment extends DialogFragment {
 
     private static final String TAG = "edu.android";
     private TravelLab travelLab = TravelLab.getInstance();
-    private StayLab stayLab = StayLab.getInstance();
     private RestaurantLab restaurantLab = RestaurantLab.getInstance();
     private DayLab dayLab = DayLab.getInstance();
     private List<Day> day2;

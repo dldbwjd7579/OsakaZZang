@@ -66,7 +66,7 @@ public class RestaurantFragment extends Fragment {
     }
 
     class restaurantRecyclerAdapter extends RecyclerView.Adapter<restaurantItemViewHolder> {
-        private RestaurantLab lab = RestaurantLab.getInstance();
+        private FoodLab lab = FoodLab.getInstance(getContext());
 
         @Override
         public restaurantItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -81,19 +81,19 @@ public class RestaurantFragment extends Fragment {
         @Override
         public void onBindViewHolder(restaurantItemViewHolder holder, final int position) {
             Log.i("tag", "arrivalTime" + arrivalTime);
-            Restaurant rs = lab.find(arrivalTime).get(position);
-            Log.i("tag", "size=" + lab.find(arrivalTime).size());
+            //Food rs = lab.find(arrivalTime).get(position);
+            Food rs = lab.getFoodList().get(position);
 
-            holder.imageView.setImageResource(rs.getImageId());
-            holder.textName.setText(rs.getName());
-            holder.textAdress.setText(rs.getAddress());
-            holder.textPhone.setText(rs.getPhone());
-            holder.textOpen.setText("오픈시간" + rs.getOpen() + "시");
-            holder.textClose.setText("닫는시간" + rs.getClose() + "시");
+            holder.imageView.setImageResource(rs.getfPhoto());
+            holder.textName.setText(rs.getfName());
+            holder.textAdress.setText(rs.getfAddress());
+            holder.textPhone.setText(rs.getfPhone());
+//            holder.textOpen.setText("오픈시간" + rs.getfOpen() + "시");
+//            holder.textClose.setText("닫는시간" + rs.getClose() + "시");
             holder.RestuarantCheck.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    lab.find(arrivalTime).get(position).setSelected3(((CheckBox) view).isChecked());
+                    lab.getFoodList().get(position).setSelected3(((CheckBox) view).isChecked());
                 }
             });
         }
@@ -102,7 +102,7 @@ public class RestaurantFragment extends Fragment {
         public int getItemCount() {
 
             Log.i("mytag", "RestaurantFragment:: arrivalTime=" + arrivalTime);
-            return lab.find(arrivalTime).size();
+            return lab.getFoodList().size();
 
         }
 
@@ -116,11 +116,11 @@ public class RestaurantFragment extends Fragment {
         public restaurantItemViewHolder(View itemView) {
             super(itemView);
             this.imageView = itemView.findViewById(R.id.imageView3);
-            this.textName = itemView.findViewById(R.id.textStayName);
-            this.textAdress = itemView.findViewById(R.id.textAddress);
-            this.textPhone = itemView.findViewById(R.id.textPhone);
-            this.textOpen = itemView.findViewById(R.id.textOpen);
-            this.textClose = itemView.findViewById(R.id.textclose);
+            this.textName = itemView.findViewById(R.id.textRestaurantName);
+            this.textAdress = itemView.findViewById(R.id.textRestaurantAddress);
+            this.textPhone = itemView.findViewById(R.id.textRestaurantPhone);
+            this.textOpen = itemView.findViewById(R.id.textRestaurantOpen);
+            this.textClose = itemView.findViewById(R.id.textRestaurantclose);
             this.RestuarantCheck = itemView.findViewById(R.id.RestuarantCheck);
         }
     }

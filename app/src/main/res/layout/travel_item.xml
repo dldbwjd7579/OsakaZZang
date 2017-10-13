@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageViewTravel"
         android:layout_width="80dp"
         android:layout_height="80dp"
         app:srcCompat="@mipmap/ic_launcher_round"
@@ -23,53 +23,53 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/text_name"
+        android:id="@+id/textTravelName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="이름"
         android:textSize="16sp"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        app:layout_constraintLeft_toRightOf="@+id/imageViewTravel"
         android:layout_marginLeft="8dp" />
 
     <TextView
-        android:id="@+id/text_address"
+        android:id="@+id/textTravelAddress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="주소"
         android:textSize="16sp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        app:layout_constraintLeft_toRightOf="@+id/imageViewTravel"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/text_name"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/textTravelName"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewTravel"
         android:layout_marginBottom="8dp"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/textPhone"
+        android:id="@+id/textTravelPhone"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="전화번호"
         android:textSize="16sp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        app:layout_constraintLeft_toRightOf="@+id/imageViewTravel"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/text_address"
+        app:layout_constraintTop_toBottomOf="@+id/textTravelAddress"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewTravel"
         android:layout_marginBottom="8dp"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintHorizontal_bias="0.0" />
 
     <TextView
-        android:id="@+id/textOpen"
+        android:id="@+id/textTravelOpen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="OpenTime"
-        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        android:text=""
+        app:layout_constraintLeft_toRightOf="@+id/imageViewTravel"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
@@ -78,18 +78,18 @@
         app:layout_constraintHorizontal_bias="0.706" />
 
     <TextView
-        android:id="@+id/textClose"
+        android:id="@+id/textTravelClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Close time"
+        android:text=""
         android:layout_marginTop="4dp"
-        app:layout_constraintTop_toBottomOf="@+id/textOpen"
-        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/textTravelOpen"
+        app:layout_constraintLeft_toRightOf="@+id/imageViewTravel"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintHorizontal_bias="0.713"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewTravel"
         android:layout_marginBottom="8dp"
         app:layout_constraintVertical_bias="0.346" />
 
@@ -99,12 +99,12 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/text_address"
+        app:layout_constraintLeft_toRightOf="@+id/textTravelAddress"
         android:layout_marginLeft="8dp"
         app:layout_constraintHorizontal_bias="0.96"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textClose"
+        android:layout_marginTop="27dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textTravelClose"
         android:layout_marginBottom="8dp"
         app:layout_constraintVertical_bias="1.0" />
 
