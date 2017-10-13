@@ -155,17 +155,18 @@ public class TotalFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 insertOsaka(view);
+                //////누르면 끝나게 해야되는데
             }
         });
 
-        selectTV = view.findViewById(R.id.selectAll);
-        btn_select = view.findViewById(R.id.btn_select);
-        btn_select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectAll(view);
-            }
-        });
+//        selectTV = view.findViewById(R.id.selectAll);
+//        btn_select = view.findViewById(R.id.btn_select);
+//        btn_select.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                selectAll(view);
+//            }
+//        });
 
         return builder.create();
 
@@ -207,7 +208,7 @@ public class TotalFragment extends DialogFragment {
             sb.append(f.toString()).append("\n");
         }
 
-        selectTV.setText(sb);
+//        selectTV.setText(sb);
     }
 
 }

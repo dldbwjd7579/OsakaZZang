@@ -178,7 +178,12 @@ public class schedule1Activity extends AppCompatActivity {
                 Log.i("edu.android", "2번째sightName : " + sightName);
 
                 choiceDate = "1";
-                saveDate = (new Date()).toString();
+                Date d = new Date();
+                int year = d.getYear() + 1900;
+                int month = d.getMonth() + 1;
+                int date = d.getDate();
+                saveDate = year + "-" + month + "-" + date;
+                Log.i("edu.android", "date : " + saveDate);
             } else{
                 Log.i("logTag", "@@@@ list가 제대로 오지 않았음  :   " + list.size());
             }
