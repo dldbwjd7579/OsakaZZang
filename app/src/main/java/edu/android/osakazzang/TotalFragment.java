@@ -173,6 +173,7 @@ public class TotalFragment extends DialogFragment {
                         insertOsaka(view);
                         FragmentManager fm = getActivity().getSupportFragmentManager();
                         fm.beginTransaction().remove(TotalFragment.this).commit();
+
                     }
                 });
                 dlgBuilder.setPositiveButton("아니오", new DialogInterface.OnClickListener() {
@@ -183,6 +184,7 @@ public class TotalFragment extends DialogFragment {
 
                 AlertDialog dlg = dlgBuilder.create();
                 dlg.show();
+
 
             }
         });
