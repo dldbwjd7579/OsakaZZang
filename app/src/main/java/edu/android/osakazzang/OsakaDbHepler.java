@@ -77,8 +77,8 @@ public class OsakaDbHepler extends SQLiteOpenHelper{
         Log.i(TAG, "Helper::insert() 호출");
         // 직접가져올수 없으므로 insert하기위해
         // SQLiteDatabase 객체를 얻어옴
-        Log.i(TAG, "Get DB"); //오픈된 데이터베이스를 여기로 넘김
         SQLiteDatabase db = getWritableDatabase();
+        Log.i(TAG, "Get DB : " + db.toString()); //오픈된 데이터베이스를 여기로 넘김
 
         // 테이블에 insert할 데이터를 contentValues 객체에 저장
         ContentValues values = new ContentValues(); // ContentValues: insert, update 등 기능

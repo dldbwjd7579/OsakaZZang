@@ -50,6 +50,7 @@ public class schedule1Activity extends AppCompatActivity {
     private int dayIndex;
     private int startIndex;
     private String trafficType;
+    private List<Osaka> list ;
 
 
     private Button btnSchedule;
@@ -105,9 +106,10 @@ public class schedule1Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 OsakaDbHepler helper = new OsakaDbHepler(schedule1Activity.this);
-                List<Osaka> list = helper.select();
-
+                list = helper.select();
+                Log.i("edu.android", "1번째 sightName : " + list);
                 for(int i = 0; i < list.size(); i++) {
+                    Log.i("edu.android", "1번째 사이즈 "+ list.size());
                     makeData(i);
                 }
 
@@ -155,19 +157,26 @@ public class schedule1Activity extends AppCompatActivity {
         protected Map<String, String> getParams() {
 
             OsakaDbHepler helper = new OsakaDbHepler(schedule1Activity.this);
-            List<Osaka> list = helper.select();
+//          list = helper.select();
             //안드로이드 db에 저장된 값들을 가져와 서버에 insert
+            Log.i("edu.android", "list.size : " + list.size());
 
             String userId = id;
             String sightName = "";
             String choiceDate = "1";
-            String saveDate = (new Date()).toString();
+            String saveDate = null;
 
             //TODO : list가 제대로 오지 않음.. size 검사 안하면 들어가는데 죽고  하면 sightName을 넣을 수 없음
             if(list.size() > 0) {
                  userId = id;
-                 sightName = list.get(index).getSIGHTNAME();
-                 choiceDate = "1";
+
+                Log.i("edu.android", "list.size : " + list.size());
+                for(int i = 0; i < list.size(); i++){
+                    Log.i("edu.android", "i : " + i);
+                    sightName = list.get(i).getSIGHTNAME();
+                    Log.i("edu.android", "2번째sightName : " + sightName);
+                }
+                                           choiceDate = "1";
                  saveDate = (new Date()).toString();
             } else{
                 Log.i("logTag", "@@@@ list가 제대로 오지 않았음  :   " + list.size());
