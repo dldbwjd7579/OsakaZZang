@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="edu.android.osakazzang.VehicleFragment"
-    android:background="@drawable/osaka"
     >
 
     <!-- TODO: Update blank fragment layout -->
@@ -15,8 +14,9 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="교통편"
-        android:textStyle="italic"
-        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textSize="26sp"
+        android:textColor="#ffffff"
         android:background="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
@@ -30,7 +30,7 @@
     <Button
         android:id="@+id/btn_AirPlane"
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="150dp"
         android:text="비행기"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -44,10 +44,10 @@
     <Button
         android:id="@+id/btn_Ship"
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="150dp"
         android:text="배"
         android:textSize="24sp"
-        android:textStyle=""
+        android:textStyle="bold"
         android:background="@drawable/japan_ship"
         app:layout_constraintTop_toBottomOf="@+id/btn_AirPlane"
         app:layout_constraintLeft_toLeftOf="parent"
